@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FindFoodFriends.Pages.WelcomePage"
+             Title=""
+             BackgroundColor="White">
+
+    <VerticalStackLayout Padding="25" Spacing="65">
+        <Image Source="applogo.png"/>
+        <Image Source="logo.png" HeightRequest="400" />
+
+        <VerticalStackLayout Spacing="25">
+            <Button x:Name="RegisterBtn" 
+                    Text="Registrieren"
+                    FontSize="30"
+                    TextColor="#444444"
+                    BackgroundColor="#65a27d"
+                    Clicked="RegisterBtn_Clicked"  />
+
+            <Button x:Name="LoginBtn" 
+                    Text="Anmelden"
+                    FontSize="30"
+                    TextColor="#444444"
+                    BackgroundColor="#65a27d"
+                    Clicked="LoginBtn_Clicked" />
+        </VerticalStackLayout>
+    </VerticalStackLayout>
+
+</ContentPage>

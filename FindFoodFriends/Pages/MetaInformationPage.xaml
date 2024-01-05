@@ -1,0 +1,543 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FindFoodFriends.Pages.MetaInformationPage"
+             Title=""
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="25" Spacing="65">
+            <Image Source="applogo.png"/>
+
+            <VerticalStackLayout Spacing="15">
+                <Label Text="Anzeigename" 
+                       FontSize="35"
+                       TextColor="#467158" 
+                       HorizontalTextAlignment="Center"/>
+
+                <Entry x:Name="UserNameEntry" 
+                   HorizontalOptions="Center" 
+                   Placeholder="Benutzername"
+                   PlaceholderColor="#ff444444"
+                   FontSize="30"
+                   WidthRequest="300"
+                   HorizontalTextAlignment="Center"
+                   TextColor="#ff444444"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="15">
+                <Label Text="Ernährungsform" 
+                       FontSize="35"
+                       TextColor="#467158" 
+                       HorizontalTextAlignment="Center"/>
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="TraditionellerVeganerCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Tradiotioneller Veganer" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutTraditionellerVeganerButton"
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutTraditionellerVeganerButton_Clicked"/>
+                </FlexLayout>
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="RohVeganerCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Roh-Veganer" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutRohVeganerButton"
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutRohVeganerButton_Clicked" />
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="FreeganerCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Freeganer" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutFreeganerButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutFreeganerButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="CleanEaterCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Clean-Eater" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutCleanEaterButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutCleanEaterButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="LowCarbCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Low-Carb" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutLowCarbButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutLowCarbButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="AyurvedaCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Ayurveda" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutAyurvedaButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutAyurvedaButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="BasischCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Basische Ernährung" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutBasischButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutBasischButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="SlowFoodCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Slow-Food" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutSlowFoodButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30"
+                            Clicked="AboutSlowFoodButton_Clicked"/>
+                </FlexLayout>
+
+
+                <VerticalStackLayout Padding="0, 35, 0, 0">
+                    <Label Text="Worauf legst du Wert?" 
+                       FontSize="35"
+                       TextColor="#467158" 
+                       HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="ZuckerfreiCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Zuckerfrei" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutZuckerfreiButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutZuckerfreiButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="WeissmehlfreiCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Weißmehlfrei" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutWeissmehlfreiButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30"  
+                            Clicked="AboutWeissmehlfreiButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="SaisonalCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Saisonal" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutSaisonalButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutSaisonalButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="RegionalCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Regional" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutRegionalButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutRegionalButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="FairtradeCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Fairtrade" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutFairtradeButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutFairtradeButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="UnverpacktCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Unverpackt" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutUnverpacktButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutUnverpacktButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="BioCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Bio" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutBioButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutBioButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="KeineZusatzstoffeCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Keine Zusatzstoffe" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutKeineZusatzstoffeButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutKeineZusatzstoffeButton_Clicked"/>
+                </FlexLayout>
+
+                <VerticalStackLayout Padding="0, 35, 0, 0">
+                    <Label Text="Allergene" 
+                       FontSize="35"
+                       TextColor="#467158" 
+                       HorizontalTextAlignment="Center"/>
+                </VerticalStackLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="GlutenCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Gluten" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutGlutenButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutGlutenButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="SesamCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Sesam" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutSesamButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutSesamButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="SenfCheckBox" 
+                              Color="#467158"/>
+                    <Label Text="Senf" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutSenfButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutSenfButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="LupineCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Lupine" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutLupineButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutLupineButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="SulfiteCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Sulfite" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutSulfiteButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutSulfiteButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="NuesseCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Nüsse" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutNuesseButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutNuesseButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="SojaCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Soja" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutSojaButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30"  
+                            Clicked="AboutSojaButton_Clicked"/>
+                </FlexLayout>
+
+
+                <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
+                    <CheckBox x:Name="SellerieCheckBox" 
+                              Color="#467158"/>
+
+                    <Label Text="Sellerie" 
+                           TextColor="#444444" 
+                           FontSize="20" 
+                           VerticalTextAlignment="Center"/>
+
+                    <Button x:Name="AboutSellerieButton" 
+                            BackgroundColor="#65a27d"
+                            Text="?"
+                            TextColor="#444444"
+                            FontSize="20"
+                            FontAttributes="Bold"
+                            CornerRadius="30" 
+                            Clicked="AboutSellerieButton_Clicked"/>
+                </FlexLayout>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Spacing="15">
+                <Label Text="Bist Du fertig?" 
+                       FontSize="35"
+                       TextColor="#467158" 
+                       HorizontalTextAlignment="Center"/>
+
+                <Button x:Name="SendMetaBtn" Text="Senden"
+                    BackgroundColor="#65a27d"
+                    TextColor="#444444"
+                    FontSize="30"
+                    Clicked="SendMetaBtn_Clicked"/>
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

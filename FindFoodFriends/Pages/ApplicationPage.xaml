@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FindFoodFriends.Pages.ApplicationPage"
+             BarBackgroundColor="White"
+             SelectedTabColor="#467158"
+             UnselectedTabColor="#ff444444">
+
+    <ContentPage Title="Suche" IconImageSource="search.png" BackgroundColor="White">
+        <ScrollView>
+            <VerticalStackLayout TranslationY="25">
+                <Label x:Name="SliderLabel" 
+                       Text="Current Values is not present" 
+                       TextColor="Black"
+                       HorizontalTextAlignment="Center"/>
+
+                <Slider x:Name="SliderRadius" 
+                        Minimum="10" 
+                        Maximum="6371" 
+                        ThumbColor="#467158"
+                        MinimumTrackColor="#ff444444"
+                        MaximumTrackColor="#ff444444"
+                        ValueChanged="SliderRadius_ValueChanged"
+                        DragCompleted="SliderRadius_DragCompleted"/>
+
+                <VerticalStackLayout x:Name="SearchBox" Padding="25" Spacing="25">
+
+                    <!--This will be filled with user from the database-->
+
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage>
+
+
+    <ContentPage Title="Nachrichten" IconImageSource="messages.png" BackgroundColor="White">
+        <ScrollView>
+            <VerticalStackLayout x:Name="MessagesBox" Padding="25" Spacing="65">
+
+                <!--This will be filled with user from the database-->
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage>
+
+
+    <ContentPage Title="Einstellungen" IconImageSource="settings.png" BackgroundColor="White">
+        <ScrollView >
+            <VerticalStackLayout x:Name="SettingsBox" Padding="25" Spacing="65">
+
+                <Button x:Name="ResetLocalDataBtn"
+                        Text="App zurücksetzen"
+                        Clicked="ResetLocalDataBtn_Clicked"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage>
+
+</TabbedPage>
