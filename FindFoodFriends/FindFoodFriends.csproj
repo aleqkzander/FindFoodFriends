@@ -89,6 +89,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="appsettings.json" />
 	  <None Remove="Resources\Fonts\Caveat-Regular.ttf" />
 	  <None Remove="Resources\Images\applogo.png" />
 	  <None Remove="Resources\Images\loading.gif" />
@@ -96,6 +97,12 @@
 	  <None Remove="Resources\Images\messages.png" />
 	  <None Remove="Resources\Images\search.png" />
 	  <None Remove="Resources\Images\settings.png" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="appsettings.json">
+	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>

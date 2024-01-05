@@ -12,7 +12,7 @@ namespace FindFoodFriends.Firebase.Utility
         private FirebaseEnviromentLoader()
         {
             var getAssembly = Assembly.GetExecutingAssembly();
-            using var stream = getAssembly.GetManifestResourceStream("FindFoodFriendsClient_Refactored.appsettings.json");
+            using var stream = getAssembly.GetManifestResourceStream("FindFoodFriends.appsettings.json");
 
             var config = new ConfigurationBuilder()
                 .AddJsonStream(stream!)
