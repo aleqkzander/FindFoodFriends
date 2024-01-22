@@ -173,4 +173,27 @@ public partial class ApplicationPage : TabbedPage
     {
         FillTheSearchBox();
     }
+
+    private async void ChangeUserDataBtn_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            localUser!.Meta = null;
+
+            string deletationResult = await FirebaseDatabase.DeleteUserMetaAsync(localUser!.UserID!);
+
+            if (deletationResult == "success")
+            {
+                await Navigation.PushModalAsync(new MetaInformationPage(localUser));
+            }
+            else
+            {
+                await DisplayAlert("Error", "Oh das ist etwas schief gelaufen. Die Daten wurden nicht gelöscht.", "Ok");
+            }
+        }
+        catch
+        {
+            await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
+        }
+    }
 }

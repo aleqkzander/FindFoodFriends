@@ -83,5 +83,21 @@ namespace FindFoodFriends.Firebase
                 return null;
             }
         }
+
+        public static async Task<string> DeleteUserMetaAsync(FirebaseUserID userid)
+        {
+            var response = await FirebaseClient.Instance.GetClient()
+                .DeleteAsync($"{FirebaseEndpoints.DatabaseEndpoint}/users/{userid.LocalId}.json?auth={userid.IdToken}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                return "success";
+            }
+            else
+            {
+                string errorMessage = await response.Content.ReadAsStringAsync();
+                return errorMessage;
+            }
+        }
     }
 }

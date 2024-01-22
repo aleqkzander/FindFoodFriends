@@ -14,6 +14,7 @@ public partial class MetaInformationPage : ContentPage
 	{
 		InitializeComponent();
         this.firebaseUser = firebaseUser;
+        FirebaseDataFile.Delete();
     }
 
     protected override async void OnAppearing()

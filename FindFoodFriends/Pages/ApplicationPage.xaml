@@ -46,7 +46,11 @@
 
     <ContentPage Title="Einstellungen" IconImageSource="settings.png" BackgroundColor="White">
         <ScrollView >
-            <VerticalStackLayout x:Name="SettingsBox" Padding="25" Spacing="65">
+            <VerticalStackLayout x:Name="SettingsBox" Padding="25" Spacing="25">
+
+                <Button x:Name="ChangeUserDataBtn"
+                        Text="Benutzerdaten ändern"
+                        Clicked="ChangeUserDataBtn_Clicked"/>
 
                 <Button x:Name="ResetLocalDataBtn"
                         Text="App zurücksetzen"
