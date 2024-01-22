@@ -178,12 +178,11 @@ public partial class ApplicationPage : TabbedPage
     {
         try
         {
-            localUser!.Meta = null;
-
             string deletationResult = await FirebaseDatabase.DeleteUserMetaAsync(localUser!.UserID!);
 
             if (deletationResult == "success")
             {
+                localUser!.Meta = null;
                 await Navigation.PushModalAsync(new MetaInformationPage(localUser));
             }
             else
