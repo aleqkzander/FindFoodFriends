@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FindFoodFriends.Pages.ChatView">
+
+    <Frame>
+        <ScrollView>
+            <VerticalStackLayout Spacing="10">
+                <HorizontalStackLayout Spacing="7.5">
+                    <Label x:Name="TimestampLabel" FontSize="15" TextColor="#467158"/>
+                    <Label x:Name="SenderLabel" FontSize="15" FontAttributes="Bold" TextColor="#ff444444"/>
+                </HorizontalStackLayout>
+                <Label x:Name="MessageLabel"/>
+            </VerticalStackLayout>
+        </ScrollView>
+    </Frame>
+
+</ContentView>

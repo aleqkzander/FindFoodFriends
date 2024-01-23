@@ -108,7 +108,8 @@ public partial class ApplicationPage : TabbedPage
                 #region create an instance of ScoreClass and set its values
                 ScoreUser scoreclass = new()
                 {
-                    Meta = user,
+                    LocalUser = localUser.Meta,
+                    DatabaseUser = user,
                     TotalMatchesPercentage = totalMatchesPercentage,
                     TrueMatchesEntry = trueMatchesEntrys,
                     TotalMatchesScore = totalMatchesScore,
@@ -135,7 +136,7 @@ public partial class ApplicationPage : TabbedPage
                 #endregion calculate radius
 
                 #region add users to screen from userscores
-                if (scoreclass!.Meta.Name != localUser.Meta.Name && isWithinRadius)
+                if (scoreclass!.DatabaseUser.Name != localUser.Meta.Name && isWithinRadius)
                 {
                     // Create a user data viewmodel
                     UserView dataUser = new(scoreclass);

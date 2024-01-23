@@ -11,6 +11,6 @@ namespace FindFoodFriends.Firebase.Objects
         public string Message = message;
 
         [JsonPropertyName("timestamp")]
-        public string Timestamp = timestamp.ToString();
+        public string Timestamp = timestamp.ToString($"dd.MM.yyyy - HH:mm:ss");
     }
 }

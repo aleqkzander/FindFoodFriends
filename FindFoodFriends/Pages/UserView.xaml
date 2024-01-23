@@ -8,7 +8,7 @@
             <VerticalStackLayout Spacing="20">
                 
                 <HorizontalStackLayout Spacing="15">
-                    <Button x:Name="Chat_Btn" Text="Chatten mit" FontSize="15" Clicked="Chat_Btn_Clicked" HorizontalOptions="End"/>
+                    <Button x:Name="Chat_Btn" Text="Chatte mit" FontSize="15" Clicked="Chat_Btn_Clicked" HorizontalOptions="End"/>
                     <Label x:Name="UsernameLabel" FontSize="35" TextColor="Black"/>
                 </HorizontalStackLayout>
                 

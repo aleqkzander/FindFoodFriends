@@ -10,7 +10,7 @@ public partial class UserView : ContentView
 	{
 		InitializeComponent();
         this.scoreuser = scoreUser;
-        UsernameLabel.Text = scoreUser.Meta!.Name;
+        UsernameLabel.Text = scoreUser.DatabaseUser!.Name;
         ScoreLabel.Text = scoreUser.TotalMatchesPercentage;
         DetailsLabel.Text = scoreUser.TrueMatchesEntry;
     }
