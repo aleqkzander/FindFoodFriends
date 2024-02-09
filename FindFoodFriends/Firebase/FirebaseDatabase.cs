@@ -99,5 +99,21 @@ namespace FindFoodFriends.Firebase
                 return errorMessage;
             }
         }
+
+        public static async Task<string> SendMessageToDatabase(FirebaseUserID userid, FirebaseMessage message)
+        {
+            var response = await FirebaseClient.Instance.GetClient()
+            .PutAsJsonAsync($"{FirebaseEndpoints.DatabaseEndpoint}/messages/{userid.LocalId}.json?auth={userid.IdToken}", message);
+
+            if (response.IsSuccessStatusCode)
+            {
+                return "success";
+            }
+            else
+            {
+                string errorMessage = await response.Content.ReadAsStringAsync();
+                return errorMessage;
+            }
+        }
     }
 }

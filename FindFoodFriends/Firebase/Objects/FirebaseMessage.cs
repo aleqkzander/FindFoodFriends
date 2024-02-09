@@ -2,10 +2,13 @@
 
 namespace FindFoodFriends.Firebase.Objects
 {
-    public class FirebaseMessage(string sender, string message, DateTime timestamp)
+    public class FirebaseMessage(string sender, string receiver, string message, DateTime timestamp)
     {
         [JsonPropertyName("sender")]
         public string Sender = sender;
+
+        [JsonPropertyName("receiver")]
+        public string Receiver = receiver;
 
         [JsonPropertyName("message")]
         public string Message = message;

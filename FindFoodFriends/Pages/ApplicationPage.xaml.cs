@@ -139,7 +139,7 @@ public partial class ApplicationPage : TabbedPage
                 if (scoreclass!.DatabaseUser.Name != localUser.Meta.Name && isWithinRadius)
                 {
                     // Create a user data viewmodel
-                    UserView dataUser = new(scoreclass);
+                    UserView dataUser = new(localUser.UserID!, scoreclass);
 
                     // Add to SearchView
                     SearchBox.Children.Add(dataUser);
