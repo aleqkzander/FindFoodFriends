@@ -4,6 +4,9 @@ namespace FindFoodFriends.Firebase.Objects
 {
     public class FirebaseMessage
     {
+        [JsonPropertyName("messageid")]
+        public string? MessageId { get; set; }
+
         [JsonPropertyName("sender")]
         public string? Sender { get; set; }
 

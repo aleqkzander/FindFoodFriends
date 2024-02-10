@@ -10,7 +10,7 @@
                     <Label x:Name="TimestampLabel" FontSize="15" TextColor="#467158"/>
                     <Label x:Name="SenderLabel" FontSize="15" FontAttributes="Bold" TextColor="#ff444444"/>
                 </HorizontalStackLayout>
-                <Label x:Name="MessageLabel"/>
+                <Label x:Name="MessageLabel" FontSize="13" TextColor="#ff444444"/>
             </VerticalStackLayout>
         </ScrollView>
     </Frame>

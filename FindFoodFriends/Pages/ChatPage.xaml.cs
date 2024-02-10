@@ -4,16 +4,17 @@
 
 using FindFoodFriends.Firebase;
 using FindFoodFriends.Firebase.Objects;
-using System.Linq;
 namespace FindFoodFriends.Pages;
 
 public partial class ChatPage : ContentPage
 {
 	private readonly FirebaseUser firebaseUser;
 	private readonly ScoreUser scoreuser;
-	private bool startLisitening;
+    private bool isListening = false;
+    private readonly HashSet<string> displayedMessageIds = [];
 
-	public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser)
+
+    public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser)
 	{
 		InitializeComponent();
 		this.firebaseUser = firebaseUser;
@@ -21,70 +22,44 @@ public partial class ChatPage : ContentPage
 		Chatuser.Text = scoreuser.DatabaseUser!.Name;
 	}
 
-    protected override void OnAppearing()
+    protected override async void OnAppearing()
     {
         base.OnAppearing();
-        startLisitening = true;
-        ListenForDatabaseChanges();
-        //GetMessagesFromDatabase();
+        isListening = true;
+
+        while (isListening)
+        {
+            await ListenForDatabaseChanges();
+            await Task.Delay(TimeSpan.FromSeconds(5)); // Adjust the delay interval as needed
+        }
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        startLisitening = false;
+        isListening = false;
     }
 
-    private async void GetMessagesFromDatabase()
+	private async Task ListenForDatabaseChanges()
 	{
 		try
 		{
-			List<FirebaseMessage>? messageList = await FirebaseDatabase.GetMessagesFromDatabase(firebaseUser.UserID!);
-			if (messageList?.Count == 0)
+			while (true)
 			{
-				return;
-			}
-			else
-			{
-				foreach (FirebaseMessage message in messageList!)
-				{
-                    // only add the designated messages for the user
-                    if (message.Receiver == scoreuser!.DatabaseUser!.Name || message.Sender == scoreuser!.DatabaseUser!.Name)
-					{
-                        ChatView chatView = new(message.Timestamp!, message.Sender!, message.Message!);
-                        AddChatViewToContainer(chatView);
-                    }
-                }
-			}
-
-            ScrollToTheBottom();
-        }
-		catch (Exception exception)
-		{
-            await DisplayAlert("Error", exception.Message, "Ok");
-        }
-    }
-
-	private async void ListenForDatabaseChanges()
-	{
-		try
-		{
-			while (startLisitening)
-			{
-                using HttpClient client = FirebaseClient.Instance.GetClient();
-                List<FirebaseMessage>? messageList = await FirebaseDatabase.GetMessagesFromDatabase(firebaseUser.UserID!);
+                using HttpClient client = new();
+                List<FirebaseMessage>? messageList = await FirebaseDatabase.ListenForDatabaseChanges(client, firebaseUser.UserID!);
 
                 if (messageList?.Count != 0)
                 {
                     foreach (FirebaseMessage message in messageList!)
                     {
-                        if (message.Receiver == scoreuser!.DatabaseUser!.Name || message.Sender == scoreuser!.DatabaseUser!.Name)
+                        if (!displayedMessageIds.Contains(message.MessageId!))
                         {
-                            ChatView chatView = new(message.Timestamp!, message.Sender!, message.Message!);
-                            if (!MessageContainer.Children.Contains(chatView))
+                            if (message.Receiver == scoreuser!.DatabaseUser!.Name || message.Sender == scoreuser!.DatabaseUser!.Name)
                             {
-                                // add the message to the container when it's not already present
+                                ChatView chatView = new(message.Timestamp!, message.Sender!, message.Message!);
                                 AddChatViewToContainer(chatView);
+                                displayedMessageIds.Add(message.MessageId!);
                             }
                         }
                     }
@@ -112,11 +87,7 @@ public partial class ChatPage : ContentPage
             FirebaseMessage firebaseMessage = new(firebaseUser!.Meta!.Name!, scoreuser!.DatabaseUser!.Name!, message, DateTime.Now);
             string? sendingResponse = await FirebaseDatabase.SendMessageToDatabase(firebaseUser.UserID!, scoreuser.DatabaseUser.UserId!,firebaseMessage);
 
-            if (sendingResponse == "success")
-            {
-                ChatView chatView = new(firebaseMessage.Timestamp!, firebaseMessage.Sender!, firebaseMessage.Message!);
-				AddChatViewToContainer(chatView);
-            }
+            if (sendingResponse == "success") {}
 			else
 			{
                 await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");

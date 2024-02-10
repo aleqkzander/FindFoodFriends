@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FindFoodFriends.Pages.ChatPage"
-             Title="ChatPage">
+             Title=""
+             BackgroundColor="White">
 
     <VerticalStackLayout Padding="25" Spacing="25">
 
@@ -12,24 +13,32 @@
             TextColor="#467158" 
             HorizontalTextAlignment="Center"/>
 
-        <ScrollView x:Name="ScrollView" HeightRequest="515">
+        <ScrollView x:Name="ScrollView" HeightRequest="500">
             <VerticalStackLayout x:Name="MessageContainer" Spacing="10">
                 <!-- Add messages here -->
             </VerticalStackLayout>
         </ScrollView>
 
-        <VerticalStackLayout>
-            <Editor
+        <VerticalStackLayout Spacing="5">
+            
+            <ScrollView>
+                <Frame HeightRequest="100">
+                    <Editor
                 x:Name="MessageEntry"
                 Placeholder="Enter your message"
-                HeightRequest="100"/>
+                PlaceholderColor="#444444"
+                TextColor="#444444"/>
+                </Frame>
+            </ScrollView>
+            
             <Button 
                 x:Name="SendBtn"
                 Text="Abschicken"
                 BackgroundColor="#65a27d"
                 TextColor="#444444"
                 Clicked="SendBtn_Clicked"/>
+            
         </VerticalStackLayout>
-        
+
     </VerticalStackLayout>
 </ContentPage>

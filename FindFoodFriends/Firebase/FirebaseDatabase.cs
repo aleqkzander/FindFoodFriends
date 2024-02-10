@@ -141,15 +141,53 @@ namespace FindFoodFriends.Firebase
 
         public static async Task<List<FirebaseMessage>?> GetMessagesFromDatabase(FirebaseUserID userid)
         {
+            List<FirebaseMessage> firebaseMessages = [];
+
             var response = await FirebaseClient.Instance.GetClient()
                 .GetAsync($"{FirebaseEndpoints.DatabaseEndpoint}/messages/{userid.LocalId}.json?auth={userid.IdToken}");
 
             if (response.IsSuccessStatusCode)
             {
                 string responseBody = await response.Content.ReadAsStringAsync();
-                var messageDict = FirebaseJsonHelper.ConvertJsonObjectToFirebaseMessageDictionry(responseBody);
-                var messagesList = messageDict?.Values.ToList();
-                return messagesList;
+                var messageDict = FirebaseJsonHelper.ConvertJsonObjectToFirebaseMessageDictionry(responseBody)!;
+
+                foreach (var message in messageDict)
+                {
+                    FirebaseMessage firebaseMessage = new();
+                    firebaseMessage = message.Value;
+                    firebaseMessage.MessageId = message.Key;
+                    firebaseMessages.Add(firebaseMessage);
+                }
+
+                return firebaseMessages;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static async Task<List<FirebaseMessage>?> ListenForDatabaseChanges(HttpClient client, FirebaseUserID userid)
+        {
+            List<FirebaseMessage> firebaseMessages = [];
+
+            var response = await client
+                .GetAsync($"{FirebaseEndpoints.DatabaseEndpoint}/messages/{userid.LocalId}.json?auth={userid.IdToken}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var messageDict = FirebaseJsonHelper.ConvertJsonObjectToFirebaseMessageDictionry(responseBody)!;
+
+                foreach (var message in messageDict)
+                {
+                    FirebaseMessage firebaseMessage = new();
+                    firebaseMessage = message.Value;
+                    firebaseMessage.MessageId = message.Key;
+                    firebaseMessages.Add(firebaseMessage);
+                }
+
+                return firebaseMessages;
             }
             else
             {
