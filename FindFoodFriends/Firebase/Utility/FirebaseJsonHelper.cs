@@ -54,5 +54,11 @@ namespace FindFoodFriends.Firebase.Utility
         {
             return JsonSerializer.Deserialize<Dictionary<string, FirebaseUserMeta>>(jsonObject);
         }
+
+        public static Dictionary<string, FirebaseMessage>? ConvertJsonObjectToFirebaseMessageDictionry(string jsonObject)
+        {
+            return JsonSerializer.Deserialize<Dictionary<string, FirebaseMessage>>(jsonObject);
+        }
     }
 }
+ 

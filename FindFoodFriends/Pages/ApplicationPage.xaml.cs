@@ -108,7 +108,8 @@ public partial class ApplicationPage : TabbedPage
                 #region create an instance of ScoreClass and set its values
                 ScoreUser scoreclass = new()
                 {
-                    Meta = user,
+                    //LocalUser = localUser.Meta,
+                    DatabaseUser = user,
                     TotalMatchesPercentage = totalMatchesPercentage,
                     TrueMatchesEntry = trueMatchesEntrys,
                     TotalMatchesScore = totalMatchesScore,
@@ -135,10 +136,10 @@ public partial class ApplicationPage : TabbedPage
                 #endregion calculate radius
 
                 #region add users to screen from userscores
-                if (scoreclass!.Meta.Name != localUser.Meta.Name && isWithinRadius)
+                if (scoreclass!.DatabaseUser.Name != localUser.Meta.Name && isWithinRadius)
                 {
                     // Create a user data viewmodel
-                    UserView dataUser = new(scoreclass);
+                    UserView dataUser = new(localUser, scoreclass);
 
                     // Add to SearchView
                     SearchBox.Children.Add(dataUser);
@@ -172,5 +173,27 @@ public partial class ApplicationPage : TabbedPage
     private void SliderRadius_DragCompleted(object sender, EventArgs e)
     {
         FillTheSearchBox();
+    }
+
+    private async void ChangeUserDataBtn_Clicked(object sender, EventArgs e)
+    {
+        try
+        {
+            string deletationResult = await FirebaseDatabase.DeleteUserMetaAsync(localUser!.UserID!);
+
+            if (deletationResult == "success")
+            {
+                localUser!.Meta = null;
+                await Navigation.PushModalAsync(new MetaInformationPage(localUser));
+            }
+            else
+            {
+                await DisplayAlert("Error", "Oh das ist etwas schief gelaufen. Die Daten wurden nicht gelöscht.", "Ok");
+            }
+        }
+        catch
+        {
+            await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
+        }
     }
 }

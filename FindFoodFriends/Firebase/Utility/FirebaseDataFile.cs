@@ -20,7 +20,7 @@
         {
             string dataFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "fff_data");
 
-            if (IsPresent() == false)
+            if (!IsPresent())
             {
                 File.WriteAllText(dataFile, content);
             }
