@@ -7,21 +7,21 @@ namespace FindFoodFriends.Pages;
 
 public partial class UserView : ContentView
 {
-    private readonly FirebaseUserID firebaseUserID;
+    private readonly FirebaseUser localuser;
     private readonly ScoreUser scoreuser;
 
-	public UserView(FirebaseUserID firebaseUserID, ScoreUser scoreUser)
+	public UserView(FirebaseUser localuser, ScoreUser scoreuser)
 	{
 		InitializeComponent();
-        this.firebaseUserID = firebaseUserID;
-        this.scoreuser = scoreUser;
-        UsernameLabel.Text = scoreUser.DatabaseUser!.Name;
-        ScoreLabel.Text = scoreUser.TotalMatchesPercentage;
-        DetailsLabel.Text = scoreUser.TrueMatchesEntry;
+        this.localuser = localuser;
+        this.scoreuser = scoreuser;
+        UsernameLabel.Text = scoreuser.DatabaseUser!.Name;
+        ScoreLabel.Text = scoreuser.TotalMatchesPercentage;
+        DetailsLabel.Text = scoreuser.TrueMatchesEntry;
     }
 
     private void Chat_Btn_Clicked(object sender, EventArgs e)
     {
-        Navigation.PushModalAsync(new ChatPage(firebaseUserID, scoreuser));
+        Navigation.PushModalAsync(new ChatPage(localuser, scoreuser));
     }
 }

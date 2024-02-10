@@ -2,7 +2,7 @@
 {
     public class ScoreUser
     {
-        public FirebaseUserMeta? LocalUser { get; set; }
+        //public FirebaseUserMeta? LocalUser { get; set; }
         public FirebaseUserMeta? DatabaseUser { get; set; }
         public string? Score { get; set; }
         public string? TotalMatchesPercentage { get; set; }

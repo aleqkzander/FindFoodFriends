@@ -108,7 +108,7 @@ public partial class ApplicationPage : TabbedPage
                 #region create an instance of ScoreClass and set its values
                 ScoreUser scoreclass = new()
                 {
-                    LocalUser = localUser.Meta,
+                    //LocalUser = localUser.Meta,
                     DatabaseUser = user,
                     TotalMatchesPercentage = totalMatchesPercentage,
                     TrueMatchesEntry = trueMatchesEntrys,
@@ -139,7 +139,7 @@ public partial class ApplicationPage : TabbedPage
                 if (scoreclass!.DatabaseUser.Name != localUser.Meta.Name && isWithinRadius)
                 {
                     // Create a user data viewmodel
-                    UserView dataUser = new(localUser.UserID!, scoreclass);
+                    UserView dataUser = new(localUser, scoreclass);
 
                     // Add to SearchView
                     SearchBox.Children.Add(dataUser);

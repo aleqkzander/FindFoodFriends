@@ -65,18 +65,23 @@ namespace FindFoodFriends.Firebase
         /// <returns></returns>
         public static async Task<List<FirebaseUserMeta>?> GetAllMetaDataAsync(FirebaseUserID userid)
         {
+            List<FirebaseUserMeta> firebaseUserMetaList = new();
+
             var response = await FirebaseClient.Instance.GetClient()
                 .GetAsync($"{FirebaseEndpoints.DatabaseEndpoint}/users.json?auth={userid.IdToken}");
 
             if (response.IsSuccessStatusCode)
             {
                 var responseBody = await response.Content.ReadAsStringAsync();
-                var userDict = FirebaseJsonHelper.ConvertJsonObjectToFirebaseUserMetaDictionary(responseBody);
+                var userDict = FirebaseJsonHelper.ConvertJsonObjectToFirebaseUserMetaDictionary(responseBody)!;
 
-                // Extract the values (user data) from the dictionary
-                var users = userDict?.Values.ToList();
+                //foreach (var user in userDict)
+                //{
+                //    FirebaseUserMeta
+                //}
 
-                return users;
+                var usersList = userDict?.Values.ToList();
+                return usersList;
             }
             else
             {
@@ -84,6 +89,11 @@ namespace FindFoodFriends.Firebase
             }
         }
 
+        /// <summary>
+        /// Delete a user by his userid
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <returns></returns>
         public static async Task<string> DeleteUserMetaAsync(FirebaseUserID userid)
         {
             var response = await FirebaseClient.Instance.GetClient()
@@ -100,19 +110,44 @@ namespace FindFoodFriends.Firebase
             }
         }
 
+        /// <summary>
+        /// Store a message at the database
+        /// </summary>
+        /// <param name="userid"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
         public static async Task<string> SendMessageToDatabase(FirebaseUserID userid, FirebaseMessage message)
         {
-            var response = await FirebaseClient.Instance.GetClient()
-            .PutAsJsonAsync($"{FirebaseEndpoints.DatabaseEndpoint}/messages/{userid.LocalId}.json?auth={userid.IdToken}", message);
+            // Now, you can write the message under the user's ID
+            var messageSentResponse = await FirebaseClient.Instance.GetClient()
+                .PostAsJsonAsync($"{FirebaseEndpoints.DatabaseEndpoint}/messages/{userid.LocalId}.json?auth={userid.IdToken}", message);
 
-            if (response.IsSuccessStatusCode)
+            if (messageSentResponse.IsSuccessStatusCode)
             {
-                return "success";
+                return $"success";
             }
             else
             {
-                string errorMessage = await response.Content.ReadAsStringAsync();
+                string? errorMessage = await messageSentResponse.Content.ReadAsStringAsync();
                 return errorMessage;
+            }
+        }
+
+        public static async Task<List<FirebaseMessage>?> GetMessagesFromDatabase(FirebaseUserID userid)
+        {
+            var response = await FirebaseClient.Instance.GetClient()
+                .GetAsync($"{FirebaseEndpoints.DatabaseEndpoint}/messages/{userid.LocalId}.json?auth={userid.IdToken}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                string responseBody = await response.Content.ReadAsStringAsync();
+                var messageDict = FirebaseJsonHelper.ConvertJsonObjectToFirebaseMessageDictionry(responseBody);
+                var messagesList = messageDict?.Values.ToList();
+                return messagesList;
+            }
+            else
+            {
+                return null;
             }
         }
     }

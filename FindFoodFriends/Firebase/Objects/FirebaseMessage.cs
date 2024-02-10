@@ -2,18 +2,28 @@
 
 namespace FindFoodFriends.Firebase.Objects
 {
-    public class FirebaseMessage(string sender, string receiver, string message, DateTime timestamp)
+    public class FirebaseMessage
     {
         [JsonPropertyName("sender")]
-        public string Sender = sender;
+        public string? Sender { get; set; }
 
         [JsonPropertyName("receiver")]
-        public string Receiver = receiver;
+        public string? Receiver { get; set; }
 
         [JsonPropertyName("message")]
-        public string Message = message;
+        public string? Message { get; set; }
 
         [JsonPropertyName("timestamp")]
-        public string Timestamp = timestamp.ToString($"dd.MM.yyyy - HH:mm:ss");
+        public string? Timestamp { get; set; }
+
+        public FirebaseMessage() { }
+
+        public FirebaseMessage(string sender, string receiver, string message, DateTime timestamp)
+        {
+            Sender = sender;
+            Receiver = receiver;
+            Message = message;
+            Timestamp = timestamp.ToString($"dd.MM.yyyy - HH:mm:ss");
+        }
     }
 }

@@ -8,13 +8,13 @@ namespace FindFoodFriends.Pages;
 
 public partial class ChatPage : ContentPage
 {
-	private readonly FirebaseUserID firebaseUserID;
+	private readonly FirebaseUser firebaseUser;
 	private readonly ScoreUser scoreuser;
 
-	public ChatPage(FirebaseUserID firebaseUserID, ScoreUser scoreuser)
+	public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser)
 	{
 		InitializeComponent();
-		this.firebaseUserID = firebaseUserID;
+		this.firebaseUser = firebaseUser;
 		this.scoreuser = scoreuser;
 		Chatuser.Text = scoreuser.DatabaseUser!.Name;
 	}
@@ -25,13 +25,34 @@ public partial class ChatPage : ContentPage
 		GetMessagesFromDatabase();
     }
 
-    private void GetMessagesFromDatabase()
+    private async void GetMessagesFromDatabase()
 	{
-		/*
-		 * Access the firebase database and download all messages 
-		 */
+		try
+		{
+			List<FirebaseMessage>? messageList = await FirebaseDatabase.GetMessagesFromDatabase(firebaseUser.UserID!);
+			if (messageList?.Count == 0)
+			{
+				return;
+			}
+			else
+			{
+				foreach (FirebaseMessage message in messageList!)
+				{
+                    // only add the designated messages for the user
+                    if (message.Receiver == scoreuser!.DatabaseUser!.Name)
+					{
+                        ChatView chatView = new(message.Timestamp!, message.Sender!, message.Message!);
+                        AddChatViewToContainer(chatView);
+                    }
+                }
+			}
 
-		ScrollToTheBottom();
+            ScrollToTheBottom();
+        }
+		catch (Exception exception)
+		{
+            await DisplayAlert("Error", exception.Message, "Ok");
+        }
     }
 
     private void SendBtn_Clicked(object sender, EventArgs e)
@@ -46,14 +67,12 @@ public partial class ChatPage : ContentPage
 	{
 		try
 		{
-			await DisplayAlert("Info", $"Send message: {message}", "Ok");
-            FirebaseMessage firebaseMessage = new(scoreuser!.LocalUser!.Name!, scoreuser!.DatabaseUser!.Name!, message, DateTime.Now);
-            string sendingResponse = await FirebaseDatabase.SendMessageToDatabase(firebaseUserID, firebaseMessage);
+            FirebaseMessage firebaseMessage = new(firebaseUser!.Meta!.Name!, scoreuser!.DatabaseUser!.Name!, message, DateTime.Now);
+            string? sendingResponse = await FirebaseDatabase.SendMessageToDatabase(firebaseUser.UserID!, firebaseMessage);
 
             if (sendingResponse == "success")
             {
-				// The message was send to the database. From here on do we add localy or do we pull from server?
-                ChatView chatView = new(firebaseMessage.Timestamp, firebaseMessage.Sender, firebaseMessage.Message);
+                ChatView chatView = new(firebaseMessage.Timestamp!, firebaseMessage.Sender!, firebaseMessage.Message!);
 				AddChatViewToContainer(chatView);
             }
 			else
@@ -61,9 +80,8 @@ public partial class ChatPage : ContentPage
                 await DisplayAlert("Error", "Es ist ein unbekannter Fehler aufgetreten. Wende dich bitte an einen Administrator", "Ok");
             }
         }
-		catch (Exception exception)
+		catch
 		{
-            //await DisplayAlert("Error", exception.ToString(), "Ok");
             await DisplayAlert("Error", "Es ist ein unbekannter Fehler aufgetreten. Wende dich bitte an einen Administrator", "Ok");
         }
     }
