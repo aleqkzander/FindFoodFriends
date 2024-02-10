@@ -4,12 +4,14 @@
 
 using FindFoodFriends.Firebase;
 using FindFoodFriends.Firebase.Objects;
+using System.Linq;
 namespace FindFoodFriends.Pages;
 
 public partial class ChatPage : ContentPage
 {
 	private readonly FirebaseUser firebaseUser;
 	private readonly ScoreUser scoreuser;
+	private bool startLisitening;
 
 	public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser)
 	{
@@ -22,7 +24,15 @@ public partial class ChatPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-		GetMessagesFromDatabase();
+        startLisitening = true;
+        ListenForDatabaseChanges();
+        //GetMessagesFromDatabase();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        startLisitening = false;
     }
 
     private async void GetMessagesFromDatabase()
@@ -54,6 +64,38 @@ public partial class ChatPage : ContentPage
             await DisplayAlert("Error", exception.Message, "Ok");
         }
     }
+
+	private async void ListenForDatabaseChanges()
+	{
+		try
+		{
+			while (startLisitening)
+			{
+                using HttpClient client = FirebaseClient.Instance.GetClient();
+                List<FirebaseMessage>? messageList = await FirebaseDatabase.GetMessagesFromDatabase(firebaseUser.UserID!);
+
+                if (messageList?.Count != 0)
+                {
+                    foreach (FirebaseMessage message in messageList!)
+                    {
+                        if (message.Receiver == scoreuser!.DatabaseUser!.Name || message.Sender == scoreuser!.DatabaseUser!.Name)
+                        {
+                            ChatView chatView = new(message.Timestamp!, message.Sender!, message.Message!);
+                            if (!MessageContainer.Children.Contains(chatView))
+                            {
+                                // add the message to the container when it's not already present
+                                AddChatViewToContainer(chatView);
+                            }
+                        }
+                    }
+                }
+            }
+		}
+		catch
+		{
+
+		}
+	}
 
     private void SendBtn_Clicked(object sender, EventArgs e)
     {
