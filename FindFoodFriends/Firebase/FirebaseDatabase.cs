@@ -65,7 +65,7 @@ namespace FindFoodFriends.Firebase
         /// <returns></returns>
         public static async Task<List<FirebaseUserMeta>?> GetAllMetaDataAsync(FirebaseUserID userid)
         {
-            List<FirebaseUserMeta> firebaseUserMetaList = new();
+            List<FirebaseUserMeta> firebaseUserMetaList = [];
 
             var response = await FirebaseClient.Instance.GetClient()
                 .GetAsync($"{FirebaseEndpoints.DatabaseEndpoint}/users.json?auth={userid.IdToken}");
@@ -75,13 +75,15 @@ namespace FindFoodFriends.Firebase
                 var responseBody = await response.Content.ReadAsStringAsync();
                 var userDict = FirebaseJsonHelper.ConvertJsonObjectToFirebaseUserMetaDictionary(responseBody)!;
 
-                //foreach (var user in userDict)
-                //{
-                //    FirebaseUserMeta
-                //}
+                foreach (var user in userDict)
+                {
+                    FirebaseUserMeta userObject = new();
+                    userObject = user.Value;
+                    userObject.UserId = user.Key;
+                    firebaseUserMetaList.Add(userObject);
+                }
 
-                var usersList = userDict?.Values.ToList();
-                return usersList;
+                return firebaseUserMetaList;
             }
             else
             {
@@ -116,19 +118,23 @@ namespace FindFoodFriends.Firebase
         /// <param name="userid"></param>
         /// <param name="message"></param>
         /// <returns></returns>
-        public static async Task<string> SendMessageToDatabase(FirebaseUserID userid, FirebaseMessage message)
+        public static async Task<string> SendMessageToDatabase(FirebaseUserID userid, string foreignUserId, FirebaseMessage message)
         {
-            // Now, you can write the message under the user's ID
-            var messageSentResponse = await FirebaseClient.Instance.GetClient()
+            // this is your user
+            var useridMessageSentResponse = await FirebaseClient.Instance.GetClient()
                 .PostAsJsonAsync($"{FirebaseEndpoints.DatabaseEndpoint}/messages/{userid.LocalId}.json?auth={userid.IdToken}", message);
 
-            if (messageSentResponse.IsSuccessStatusCode)
+            // this is the other user
+            var foreignUserIdMessageSentResponse = await FirebaseClient.Instance.GetClient()
+                .PostAsJsonAsync($"{FirebaseEndpoints.DatabaseEndpoint}/messages/{foreignUserId}.json?auth={userid.IdToken}", message);
+
+            if (useridMessageSentResponse.IsSuccessStatusCode && foreignUserIdMessageSentResponse.IsSuccessStatusCode)
             {
                 return $"success";
             }
             else
             {
-                string? errorMessage = await messageSentResponse.Content.ReadAsStringAsync();
+                string? errorMessage = await useridMessageSentResponse.Content.ReadAsStringAsync();
                 return errorMessage;
             }
         }

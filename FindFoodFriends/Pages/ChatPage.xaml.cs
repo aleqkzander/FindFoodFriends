@@ -39,7 +39,7 @@ public partial class ChatPage : ContentPage
 				foreach (FirebaseMessage message in messageList!)
 				{
                     // only add the designated messages for the user
-                    if (message.Receiver == scoreuser!.DatabaseUser!.Name)
+                    if (message.Receiver == scoreuser!.DatabaseUser!.Name || message.Sender == scoreuser!.DatabaseUser!.Name)
 					{
                         ChatView chatView = new(message.Timestamp!, message.Sender!, message.Message!);
                         AddChatViewToContainer(chatView);
@@ -68,7 +68,7 @@ public partial class ChatPage : ContentPage
 		try
 		{
             FirebaseMessage firebaseMessage = new(firebaseUser!.Meta!.Name!, scoreuser!.DatabaseUser!.Name!, message, DateTime.Now);
-            string? sendingResponse = await FirebaseDatabase.SendMessageToDatabase(firebaseUser.UserID!, firebaseMessage);
+            string? sendingResponse = await FirebaseDatabase.SendMessageToDatabase(firebaseUser.UserID!, scoreuser.DatabaseUser.UserId!,firebaseMessage);
 
             if (sendingResponse == "success")
             {
@@ -77,12 +77,12 @@ public partial class ChatPage : ContentPage
             }
 			else
 			{
-                await DisplayAlert("Error", "Es ist ein unbekannter Fehler aufgetreten. Wende dich bitte an einen Administrator", "Ok");
+                await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
             }
         }
 		catch
 		{
-            await DisplayAlert("Error", "Es ist ein unbekannter Fehler aufgetreten. Wende dich bitte an einen Administrator", "Ok");
+            await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
         }
     }
 
@@ -98,3 +98,5 @@ public partial class ChatPage : ContentPage
         ScrollView.ScrollToAsync(0, ScrollView.Height + 9999, true);
     }
 }
+
+
