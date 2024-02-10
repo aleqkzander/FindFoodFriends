@@ -30,7 +30,7 @@ public partial class ChatPage : ContentPage
         while (isListening)
         {
             await ListenForDatabaseChanges();
-            await Task.Delay(TimeSpan.FromSeconds(5)); // Adjust the delay interval as needed
+            await Task.Delay(TimeSpan.FromSeconds(5000)); // Every 5 seconds
         }
     }
 
