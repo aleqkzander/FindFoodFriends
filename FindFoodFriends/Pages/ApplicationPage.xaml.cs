@@ -19,6 +19,8 @@ public partial class ApplicationPage : TabbedPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        await Dispatcher.DispatchAsync(EnableLoadingAnimation);
+
         SliderRadius.Value = 10;
 
         try
@@ -37,6 +39,8 @@ public partial class ApplicationPage : TabbedPage
                     FillTheSearchBox();
                 }
             }
+
+            
         }
         catch
         {
@@ -146,6 +150,8 @@ public partial class ApplicationPage : TabbedPage
                 }
                 #endregion add users to screen from userscores
             }
+
+            DisableLoadingAnimation();
         }
         catch
         {
@@ -165,8 +171,9 @@ public partial class ApplicationPage : TabbedPage
         Environment.Exit(0);
     }
 
-    private void SliderRadius_ValueChanged(object sender, ValueChangedEventArgs e)
+    private async void SliderRadius_ValueChanged(object sender, ValueChangedEventArgs e)
     {
+        await Dispatcher.DispatchAsync(EnableLoadingAnimation);
         SliderLabel.Text = "Suchradius " + SliderRadius.Value.ToString("00") + " km";
     }
 
@@ -195,5 +202,17 @@ public partial class ApplicationPage : TabbedPage
         {
             await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
         }
+    }
+
+    private async Task EnableLoadingAnimation()
+    {
+        await Task.Delay(1);
+        loading.IsAnimationPlaying = true;
+    }
+
+    private void DisableLoadingAnimation()
+    {
+        loading.IsAnimationPlaying = false;
+        loading.IsVisible = false;
     }
 }

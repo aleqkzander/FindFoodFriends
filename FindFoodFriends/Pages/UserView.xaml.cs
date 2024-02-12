@@ -20,8 +20,8 @@ public partial class UserView : ContentView
         DetailsLabel.Text = scoreuser.TrueMatchesEntry;
     }
 
-    private void Chat_Btn_Clicked(object sender, EventArgs e)
+    private async void Chat_Btn_Clicked(object sender, EventArgs e)
     {
-        Navigation.PushModalAsync(new ChatPage(localuser, scoreuser));
+        await Navigation.PushModalAsync(new ChatPage(localuser, scoreuser));
     }
 }
