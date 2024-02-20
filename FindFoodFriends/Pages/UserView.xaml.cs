@@ -9,7 +9,7 @@ public partial class UserView : ContentView
 {
     private readonly FirebaseUser localuser;
     private readonly ScoreUser scoreuser;
-    private readonly List<FirebaseMessage> messages;
+    private readonly List<FirebaseMessage> initialUserMessages;
 
 	public UserView(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages)
 	{
@@ -19,11 +19,11 @@ public partial class UserView : ContentView
         UsernameLabel.Text = scoreuser.DatabaseUser!.Name;
         ScoreLabel.Text = scoreuser.TotalMatchesPercentage;
         DetailsLabel.Text = scoreuser.TrueMatchesEntry;
-        this.messages = messages;
+        initialUserMessages = messages;
     }
 
     private async void Chat_Btn_Clicked(object sender, EventArgs e)
     {
-        await Navigation.PushModalAsync(new ChatPage(localuser, scoreuser, messages));
+        await Navigation.PushModalAsync(new ChatPage(localuser, scoreuser, initialUserMessages));
     }
 }

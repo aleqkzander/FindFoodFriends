@@ -12,17 +12,17 @@ public partial class ChatPage : ContentPage
 {
 	private readonly FirebaseUser firebaseUser;
 	private readonly ScoreUser scoreuser;
-    private readonly List<FirebaseMessage> userMessages;
+    private readonly List<FirebaseMessage> initialUserMessages;
     private readonly HashSet<string> displayedMessageIds = [];
     private bool isListening;
 
-    public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser, List<FirebaseMessage> downloadedList)
+    public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser, List<FirebaseMessage> initialUserMessages)
 	{
 		InitializeComponent();
 		this.firebaseUser = firebaseUser;
 		this.scoreuser = scoreuser;
 		Chatuser.Text = scoreuser.DatabaseUser!.Name;
-        userMessages = downloadedList;
+        this.initialUserMessages = initialUserMessages;
 	}
 
     protected override async void OnAppearing()
@@ -78,9 +78,9 @@ public partial class ChatPage : ContentPage
     {
         try
         {
-            if (userMessages?.Count != 0)
+            if (initialUserMessages?.Count != 0)
             {
-                foreach (FirebaseMessage message in userMessages!)
+                foreach (FirebaseMessage message in initialUserMessages!)
                 {
                     if (!displayedMessageIds.Contains(message.MessageId!))
                     {
@@ -140,7 +140,7 @@ public partial class ChatPage : ContentPage
                     foreach (FirebaseMessage message in newDownloadedMessages!)
                     {
                         // we keep track of all messages
-                        userMessages.Add(message);
+                        initialUserMessages.Add(message);
 
                         // but display messages only for the specific user
                         if (!displayedMessageIds.Contains(message.MessageId!))
@@ -209,11 +209,22 @@ public partial class ChatPage : ContentPage
     {
         await Task.Delay(1);
         loading.IsAnimationPlaying = true;
+        await Task.Delay(1);
     }
 
     private void DisableLoadingAnimation()
     {
         loading.IsAnimationPlaying = false;
         loading.IsVisible = false;
+    }
+
+    private void SwipeGestureRecognizer_Swiped(object sender, SwipedEventArgs e)
+    {
+        var navigationStack = Navigation.NavigationStack;
+        if (navigationStack.Count > 0)
+        {
+            var previousPage = navigationStack[navigationStack.Count - 1] as ApplicationPage;
+            previousPage?.UpdateInitialUserMessages(initialUserMessages);
+        }
     }
 }

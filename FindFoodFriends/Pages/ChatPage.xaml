@@ -6,18 +6,22 @@
              BackgroundColor="White">
 
     <VerticalStackLayout Padding="25" Spacing="25">
-
-        <Label 
-            x:Name="Chatuser"
-            FontSize="35"
-            TextColor="#467158" 
-            HorizontalTextAlignment="Center"/>
+        
+        <VerticalStackLayout.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Right" Swiped="SwipeGestureRecognizer_Swiped"/>
+        </VerticalStackLayout.GestureRecognizers>
 
         <Image x:Name="loading" 
                Source="loading.gif" 
                HeightRequest="50"
                IsAnimationPlaying="False" 
                IsVisible="true"/>
+        
+        <Label 
+            x:Name="Chatuser"
+            FontSize="35"
+            TextColor="#467158" 
+            HorizontalTextAlignment="Center"/>
 
         <ScrollView x:Name="ScrollView" HeightRequest="500">
             <VerticalStackLayout x:Name="MessageContainer" Spacing="10">
