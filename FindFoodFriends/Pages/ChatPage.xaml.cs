@@ -12,20 +12,24 @@ public partial class ChatPage : ContentPage
 {
 	private readonly FirebaseUser firebaseUser;
 	private readonly ScoreUser scoreuser;
+    private readonly List<FirebaseMessage> userMessages;
     private readonly HashSet<string> displayedMessageIds = [];
     private bool isListening;
 
-    public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser)
+    public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser, List<FirebaseMessage> downloadedList)
 	{
 		InitializeComponent();
 		this.firebaseUser = firebaseUser;
 		this.scoreuser = scoreuser;
 		Chatuser.Text = scoreuser.DatabaseUser!.Name;
+        userMessages = downloadedList;
 	}
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        await Dispatcher.DispatchAsync(EnableLoadingAnimation);
+
         isListening = true;
         await PollForDatabaseChanges(isListening);
     }
@@ -45,8 +49,8 @@ public partial class ChatPage : ContentPage
     {
         try
         {
-            await Dispatcher.DispatchAsync(EnableLoadingAnimation);
-            await DownloadAndDisplayAllMessagesForReceiver();
+            //await Dispatcher.DispatchAsync(EnableLoadingAnimation);
+            AssignMessagesForUser(scoreuser);
         }
         catch
         {
@@ -70,20 +74,17 @@ public partial class ChatPage : ContentPage
     /// Call method to download messages at the begining
     /// </summary>
     /// <returns></returns>
-    private async Task DownloadAndDisplayAllMessagesForReceiver()
+    private void AssignMessagesForUser(ScoreUser user)
     {
         try
         {
-            using HttpClient client = new();
-            List<FirebaseMessage>? messageList = await FirebaseDatabase.DownloadAllMessages(client, firebaseUser.UserID!);
-
-            if (messageList?.Count != 0)
+            if (userMessages?.Count != 0)
             {
-                foreach (FirebaseMessage message in messageList!)
+                foreach (FirebaseMessage message in userMessages!)
                 {
                     if (!displayedMessageIds.Contains(message.MessageId!))
                     {
-                        if (message.Receiver == scoreuser!.DatabaseUser!.Name || message.Sender == scoreuser!.DatabaseUser!.Name)
+                        if (message.Receiver == user!.DatabaseUser!.Name || message.Sender == user!.DatabaseUser!.Name)
                         {
                             ChatView chatView = new(message.Timestamp!, message.Sender!, message.Message!);
                             AddChatViewToContainer(chatView);
@@ -104,7 +105,7 @@ public partial class ChatPage : ContentPage
     /// Get count of messages
     /// </summary>
     /// <returns></returns>
-    private async Task<int> GetMessageCount()
+    private async Task<int> GetMessageCountForSelf()
     {
         try
         {
@@ -126,17 +127,22 @@ public partial class ChatPage : ContentPage
     {
         try
         {
-            int messagesCount = await GetMessageCount();
+            int messagesCount = await GetMessageCountForSelf();
             if (displayedMessageIds.Count < messagesCount)
             {
                 int amountOfMessagesToDownload = messagesCount - displayedMessageIds.Count;
-                using HttpClient client = new();
-                List<FirebaseMessage>? messageList = await FirebaseDatabase.DownloadAmountOfMessages(client, firebaseUser.UserID!, amountOfMessagesToDownload);
 
-                if (messageList?.Count != 0)
+                using HttpClient client = new();
+                List<FirebaseMessage>? newDownloadedMessages = await FirebaseDatabase.DownloadAmountOfMessages(client, firebaseUser.UserID!, amountOfMessagesToDownload);
+
+                if (newDownloadedMessages?.Count != 0)
                 {
-                    foreach (FirebaseMessage message in messageList!)
+                    foreach (FirebaseMessage message in newDownloadedMessages!)
                     {
+                        // we keep track of all messages
+                        userMessages.Add(message);
+
+                        // but display messages only for the specific user
                         if (!displayedMessageIds.Contains(message.MessageId!))
                         {
                             if (message.Receiver == scoreuser!.DatabaseUser!.Name || message.Sender == scoreuser!.DatabaseUser!.Name)
@@ -211,5 +217,3 @@ public partial class ChatPage : ContentPage
         loading.IsVisible = false;
     }
 }
-
-

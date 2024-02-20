@@ -7,6 +7,7 @@ namespace FindFoodFriends.Pages;
 public partial class ApplicationPage : TabbedPage
 {
     private readonly FirebaseUser? localUser;
+    private readonly List<FirebaseMessage> localUserMessages = [];
     private List<FirebaseUserMeta>? userList = [];
     private readonly IList<ScoreUser> userscoresList = [];
 
@@ -36,11 +37,10 @@ public partial class ApplicationPage : TabbedPage
                 }
                 else
                 {
+                    await DownloadAllMessagesFromUser(localUser);
                     FillTheSearchBox();
                 }
             }
-
-            
         }
         catch
         {
@@ -143,7 +143,7 @@ public partial class ApplicationPage : TabbedPage
                 if (scoreclass!.DatabaseUser.Name != localUser.Meta.Name && isWithinRadius)
                 {
                     // Create a user data viewmodel
-                    UserView dataUser = new(localUser, scoreclass);
+                    UserView dataUser = new(localUser, scoreclass, localUserMessages);
 
                     // Add to SearchView
                     SearchBox.Children.Add(dataUser);
@@ -214,5 +214,25 @@ public partial class ApplicationPage : TabbedPage
     {
         loading.IsAnimationPlaying = false;
         loading.IsVisible = false;
+    }
+
+    private async Task DownloadAllMessagesFromUser(FirebaseUser firebaseUser)
+    {
+        try
+        {
+            using HttpClient client = new();
+            List<FirebaseMessage>? messageList = await FirebaseDatabase.DownloadAllMessages(client, firebaseUser!.UserID!);
+
+            if (messageList?.Count != 0)
+            {
+                foreach (FirebaseMessage message in messageList!)
+                {
+                    localUserMessages.Add(message);
+                }
+            }
+        }
+        catch
+        {
+        }
     }
 }
