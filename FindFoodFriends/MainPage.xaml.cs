@@ -15,8 +15,7 @@ namespace FindFoodFriends
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await Task.Delay(1);
-            EnableLoadingAnimation();
+            await Dispatcher.DispatchAsync(EnableLoadingAnimation);
             LoadLocalData();
         }
 
@@ -68,23 +67,33 @@ namespace FindFoodFriends
             }
         }
 
-        private void EnableLoadingAnimation()
+        private async Task EnableLoadingAnimation()
         {
+            await Task.Delay(1);
             loading.IsAnimationPlaying = true;
+        }
+
+        private void DisableLoadingAnimation()
+        {
+            loading.IsAnimationPlaying = false;
+            loading.IsVisible = false;
         }
 
         private void OpenWelcome()
         {
+            DisableLoadingAnimation();
             Navigation.PushModalAsync(new WelcomePage());
         }
 
         private void OpenMainApplication(FirebaseUser firebaseUser)
         {
+            DisableLoadingAnimation();
             Navigation.PushModalAsync(new ApplicationPage(firebaseUser));
         }
 
         private void OpenMetaInformation(FirebaseUser firebaseUser)
         {
+            DisableLoadingAnimation();
             Navigation.PushModalAsync(new MetaInformationPage(firebaseUser));
         }
     }

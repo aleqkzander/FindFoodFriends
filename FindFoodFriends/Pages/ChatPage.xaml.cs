@@ -1,5 +1,7 @@
 /*
  * The userid will be utilized for authentication
+ * Use streaming to listen for changes in realtime and call an event
+ * https://firebase.google.com/docs/database/rest/retrieve-data#section-rest-streaming
  */
 
 using FindFoodFriends.Firebase;
@@ -10,28 +12,26 @@ public partial class ChatPage : ContentPage
 {
 	private readonly FirebaseUser firebaseUser;
 	private readonly ScoreUser scoreuser;
-    private bool isListening = false;
+    private readonly List<FirebaseMessage> initialUserMessages;
     private readonly HashSet<string> displayedMessageIds = [];
+    private bool isListening;
 
-
-    public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser)
+    public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser, List<FirebaseMessage> initialUserMessages)
 	{
 		InitializeComponent();
 		this.firebaseUser = firebaseUser;
 		this.scoreuser = scoreuser;
 		Chatuser.Text = scoreuser.DatabaseUser!.Name;
+        this.initialUserMessages = initialUserMessages;
 	}
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
-        isListening = true;
+        await Dispatcher.DispatchAsync(EnableLoadingAnimation);
 
-        while (isListening)
-        {
-            await ListenForDatabaseChanges();
-            await Task.Delay(TimeSpan.FromSeconds(5000)); // Every 5 seconds
-        }
+        isListening = true;
+        await PollForDatabaseChanges(isListening);
     }
 
     protected override void OnDisappearing()
@@ -40,19 +40,109 @@ public partial class ChatPage : ContentPage
         isListening = false;
     }
 
-	private async Task ListenForDatabaseChanges()
-	{
-		try
-		{
-			while (true)
-			{
-                using HttpClient client = new();
-                List<FirebaseMessage>? messageList = await FirebaseDatabase.ListenForDatabaseChanges(client, firebaseUser.UserID!);
+    /// <summary>
+    /// Start listening for message differences every 5 seconds
+    /// </summary>
+    /// <param name="listening"></param>
+    /// <returns></returns>
+    private async Task PollForDatabaseChanges(bool listening)
+    {
+        try
+        {
+            //await Dispatcher.DispatchAsync(EnableLoadingAnimation);
+            AssignMessagesForUser(scoreuser);
+        }
+        catch
+        {
 
-                if (messageList?.Count != 0)
+        }
+
+        while (listening)
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                await DownloadAndDisplayMissingMessages();
+            }
+            catch
+            {
+            }
+        }
+    }
+
+    /// <summary>
+    /// Call method to download messages at the begining
+    /// </summary>
+    /// <returns></returns>
+    private void AssignMessagesForUser(ScoreUser user)
+    {
+        try
+        {
+            if (initialUserMessages?.Count != 0)
+            {
+                foreach (FirebaseMessage message in initialUserMessages!)
                 {
-                    foreach (FirebaseMessage message in messageList!)
+                    if (!displayedMessageIds.Contains(message.MessageId!))
                     {
+                        if (message.Receiver == user!.DatabaseUser!.Name || message.Sender == user!.DatabaseUser!.Name)
+                        {
+                            ChatView chatView = new(message.Timestamp!, message.Sender!, message.Message!);
+                            AddChatViewToContainer(chatView);
+                            displayedMessageIds.Add(message.MessageId!);
+                        }
+                    }
+                }
+            }
+
+            DisableLoadingAnimation();
+        }
+        catch
+        {
+        }
+    }
+
+    /// <summary>
+    /// Get count of messages
+    /// </summary>
+    /// <returns></returns>
+    private async Task<int> GetMessageCountForSelf()
+    {
+        try
+        {
+            using HttpClient client = new();
+            int messagesCount = await FirebaseDatabase.CountMessagesForUser(client, firebaseUser.UserID!);
+            return messagesCount;
+        }
+        catch
+        {
+            return 0;
+        }
+    }
+
+    /// <summary>
+    /// Download missing messages
+    /// </summary>
+    /// <returns></returns>
+    private async Task DownloadAndDisplayMissingMessages() 
+    {
+        try
+        {
+            int messagesCount = await GetMessageCountForSelf();
+            if (displayedMessageIds.Count < messagesCount)
+            {
+                int amountOfMessagesToDownload = messagesCount - displayedMessageIds.Count;
+
+                using HttpClient client = new();
+                List<FirebaseMessage>? newDownloadedMessages = await FirebaseDatabase.DownloadAmountOfMessages(client, firebaseUser.UserID!, amountOfMessagesToDownload);
+
+                if (newDownloadedMessages?.Count != 0)
+                {
+                    foreach (FirebaseMessage message in newDownloadedMessages!)
+                    {
+                        // we keep track of all messages
+                        initialUserMessages.Add(message);
+
+                        // but display messages only for the specific user
                         if (!displayedMessageIds.Contains(message.MessageId!))
                         {
                             if (message.Receiver == scoreuser!.DatabaseUser!.Name || message.Sender == scoreuser!.DatabaseUser!.Name)
@@ -65,18 +155,19 @@ public partial class ChatPage : ContentPage
                     }
                 }
             }
-		}
-		catch
-		{
+        }
+        catch
+        {
 
-		}
-	}
+        }
+    }
 
     private void SendBtn_Clicked(object sender, EventArgs e)
     {
 		if (!string.IsNullOrEmpty(MessageEntry.Text))
 		{
             SendMessage(MessageEntry.Text);
+            SendBtn.IsEnabled = false;
         }
     }
 
@@ -87,14 +178,17 @@ public partial class ChatPage : ContentPage
             FirebaseMessage firebaseMessage = new(firebaseUser!.Meta!.Name!, scoreuser!.DatabaseUser!.Name!, message, DateTime.Now);
             string? sendingResponse = await FirebaseDatabase.SendMessageToDatabase(firebaseUser.UserID!, scoreuser.DatabaseUser.UserId!,firebaseMessage);
 
-            if (sendingResponse == "success") {}
-			else
-			{
-                await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
+            if (sendingResponse == "success") 
+            {
+                MessageEntry.Text = string.Empty;
+                await DownloadAndDisplayMissingMessages();
             }
+
+            SendBtn.IsEnabled = true;
         }
 		catch
 		{
+            SendBtn.IsEnabled = true;
             await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
         }
     }
@@ -110,6 +204,27 @@ public partial class ChatPage : ContentPage
 	{
         ScrollView.ScrollToAsync(0, ScrollView.Height + 9999, true);
     }
+
+    private async Task EnableLoadingAnimation()
+    {
+        await Task.Delay(1);
+        loading.IsAnimationPlaying = true;
+        await Task.Delay(1);
+    }
+
+    private void DisableLoadingAnimation()
+    {
+        loading.IsAnimationPlaying = false;
+        loading.IsVisible = false;
+    }
+
+    private void SwipeGestureRecognizer_Swiped(object sender, SwipedEventArgs e)
+    {
+        var navigationStack = Navigation.NavigationStack;
+        if (navigationStack.Count > 0)
+        {
+            var previousPage = navigationStack[navigationStack.Count - 1] as ApplicationPage;
+            previousPage?.UpdateInitialUserMessages(initialUserMessages);
+        }
+    }
 }
-
-

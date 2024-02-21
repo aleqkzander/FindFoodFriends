@@ -7,6 +7,7 @@ namespace FindFoodFriends.Pages;
 public partial class ApplicationPage : TabbedPage
 {
     private readonly FirebaseUser? localUser;
+    private readonly List<FirebaseMessage> initialUserMessages = [];
     private List<FirebaseUserMeta>? userList = [];
     private readonly IList<ScoreUser> userscoresList = [];
 
@@ -19,6 +20,8 @@ public partial class ApplicationPage : TabbedPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        await Dispatcher.DispatchAsync(EnableLoadingAnimation);
+
         SliderRadius.Value = 10;
 
         try
@@ -34,6 +37,7 @@ public partial class ApplicationPage : TabbedPage
                 }
                 else
                 {
+                    await DownloadAllMessagesFromUser(localUser);
                     FillTheSearchBox();
                 }
             }
@@ -139,13 +143,15 @@ public partial class ApplicationPage : TabbedPage
                 if (scoreclass!.DatabaseUser.Name != localUser.Meta.Name && isWithinRadius)
                 {
                     // Create a user data viewmodel
-                    UserView dataUser = new(localUser, scoreclass);
+                    UserView dataUser = new(localUser, scoreclass, initialUserMessages);
 
                     // Add to SearchView
                     SearchBox.Children.Add(dataUser);
                 }
                 #endregion add users to screen from userscores
             }
+
+            DisableLoadingAnimation();
         }
         catch
         {
@@ -165,8 +171,9 @@ public partial class ApplicationPage : TabbedPage
         Environment.Exit(0);
     }
 
-    private void SliderRadius_ValueChanged(object sender, ValueChangedEventArgs e)
+    private async void SliderRadius_ValueChanged(object sender, ValueChangedEventArgs e)
     {
+        await Dispatcher.DispatchAsync(EnableLoadingAnimation);
         SliderLabel.Text = "Suchradius " + SliderRadius.Value.ToString("00") + " km";
     }
 
@@ -194,6 +201,49 @@ public partial class ApplicationPage : TabbedPage
         catch
         {
             await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
+        }
+    }
+
+    private async Task EnableLoadingAnimation()
+    {
+        await Task.Delay(1);
+        loading.IsAnimationPlaying = true;
+    }
+
+    private void DisableLoadingAnimation()
+    {
+        loading.IsAnimationPlaying = false;
+        loading.IsVisible = false;
+    }
+
+    private async Task DownloadAllMessagesFromUser(FirebaseUser firebaseUser)
+    {
+        try
+        {
+            using HttpClient client = new();
+            List<FirebaseMessage>? messageList = await FirebaseDatabase.DownloadAllMessages(client, firebaseUser!.UserID!);
+
+            if (messageList?.Count != 0)
+            {
+                foreach (FirebaseMessage message in messageList!)
+                {
+                    initialUserMessages.Add(message);
+                }
+            }
+        }
+        catch
+        {
+        }
+    }
+
+    public void UpdateInitialUserMessages(List<FirebaseMessage> messages)
+    {
+        if (messages.Count != 0)
+        {
+            foreach (var message in messages)
+            {
+                initialUserMessages.Add(message);
+            }
         }
     }
 }

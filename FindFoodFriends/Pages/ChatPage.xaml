@@ -6,7 +6,17 @@
              BackgroundColor="White">
 
     <VerticalStackLayout Padding="25" Spacing="25">
+        
+        <VerticalStackLayout.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Right" Swiped="SwipeGestureRecognizer_Swiped"/>
+        </VerticalStackLayout.GestureRecognizers>
 
+        <Image x:Name="loading" 
+               Source="loading.gif" 
+               HeightRequest="50"
+               IsAnimationPlaying="False" 
+               IsVisible="true"/>
+        
         <Label 
             x:Name="Chatuser"
             FontSize="35"

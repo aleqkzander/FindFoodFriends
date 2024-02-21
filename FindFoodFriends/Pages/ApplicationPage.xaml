@@ -23,6 +23,12 @@
                         ValueChanged="SliderRadius_ValueChanged"
                         DragCompleted="SliderRadius_DragCompleted"/>
 
+                <Image x:Name="loading" 
+                       Source="loading.gif" 
+                       HeightRequest="50"
+                       IsAnimationPlaying="False" 
+                       IsVisible="true"/>
+
                 <VerticalStackLayout x:Name="SearchBox" Padding="25" Spacing="25">
 
                     <!--This will be filled with user from the database-->
