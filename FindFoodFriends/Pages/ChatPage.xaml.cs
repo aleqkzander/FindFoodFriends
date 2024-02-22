@@ -6,6 +6,7 @@
 
 using FindFoodFriends.Firebase;
 using FindFoodFriends.Firebase.Objects;
+using System.Net;
 namespace FindFoodFriends.Pages;
 
 public partial class ChatPage : ContentPage
@@ -14,7 +15,6 @@ public partial class ChatPage : ContentPage
 	private readonly ScoreUser scoreuser;
     private readonly List<FirebaseMessage> initialUserMessages;
     private readonly HashSet<string> displayedMessageIds = [];
-    private bool isListening;
 
     public ChatPage(FirebaseUser firebaseUser, ScoreUser scoreuser, List<FirebaseMessage> initialUserMessages)
 	{
@@ -29,16 +29,67 @@ public partial class ChatPage : ContentPage
     {
         base.OnAppearing();
         await Dispatcher.DispatchAsync(EnableLoadingAnimation);
+        AssignMessagesForUser(scoreuser);
 
-        isListening = true;
-        await PollForDatabaseChanges(isListening);
+        string location = $"messages/{firebaseUser.UserID!.LocalId}";
+        await ListenForDatabaseChanges(location);
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
-        isListening = false;
     }
+
+
+    private async Task ListenForDatabaseChanges(string location)
+    {
+        try
+        {
+            using var client = new HttpClient();
+            var requestUri = $"{FirebaseEndpoints.DatabaseEndpoint}/{location}.json?auth={firebaseUser.UserID!.IdToken}";
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/event-stream"));
+
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            if (response.IsSuccessStatusCode)
+            {
+                await ProcessEventStream(response);
+            }
+            else if (response.StatusCode == HttpStatusCode.Redirect || response.StatusCode == HttpStatusCode.TemporaryRedirect)
+            {
+                await HandleRedirect(response);
+            }
+            else
+            {
+                throw new HttpRequestException($"Failed to stream changes. Status code: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+        }
+    }
+
+    private async Task ProcessEventStream(HttpResponseMessage response)
+    {
+        using var stream = await response.Content.ReadAsStreamAsync();
+        using var reader = new StreamReader(stream);
+        while (!reader.EndOfStream)
+        {
+            await DownloadAndDisplayMissingMessages();
+        }
+    }
+
+    private async Task HandleRedirect(HttpResponseMessage response)
+    {
+        var redirectedLocation = response.Headers.Location?.ToString();
+        if (!string.IsNullOrEmpty(redirectedLocation))
+        {
+            // Call ListenForDatabaseChanges recursively with the new location
+            await ListenForDatabaseChanges(redirectedLocation);
+        }
+    }
+
+
 
     /// <summary>
     /// Start listening for message differences every 5 seconds
@@ -49,7 +100,6 @@ public partial class ChatPage : ContentPage
     {
         try
         {
-            //await Dispatcher.DispatchAsync(EnableLoadingAnimation);
             AssignMessagesForUser(scoreuser);
         }
         catch
@@ -161,6 +211,9 @@ public partial class ChatPage : ContentPage
 
         }
     }
+
+
+
 
     private void SendBtn_Clicked(object sender, EventArgs e)
     {
