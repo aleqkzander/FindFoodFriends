@@ -31,7 +31,6 @@ public partial class ChatPage : ContentPage
 
         await Dispatcher.DispatchAsync(EnableLoadingAnimation);
         AssignAndDisplayMessagesForUser(scoreuser);
-
         string location = $"messages/{firebaseUser.UserID!.LocalId}";
         await ListenForDatabaseChanges(location);
     }
@@ -140,7 +139,7 @@ public partial class ChatPage : ContentPage
     }
 
     /// <summary>
-    /// Start listening for message differences every 5 seconds
+    /// (do not use) Start listening for message differences every 5 seconds
     /// </summary>
     /// <param name="listening"></param>
     /// <returns></returns>
