@@ -28,8 +28,9 @@ public partial class ChatPage : ContentPage
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+
         await Dispatcher.DispatchAsync(EnableLoadingAnimation);
-        AssignMessagesForUser(scoreuser);
+        AssignAndDisplayMessagesForUser(scoreuser);
 
         string location = $"messages/{firebaseUser.UserID!.LocalId}";
         await ListenForDatabaseChanges(location);
@@ -40,91 +41,7 @@ public partial class ChatPage : ContentPage
         base.OnDisappearing();
     }
 
-
-    private async Task ListenForDatabaseChanges(string location)
-    {
-        try
-        {
-            using var client = new HttpClient();
-            var requestUri = $"{FirebaseEndpoints.DatabaseEndpoint}/{location}.json?auth={firebaseUser.UserID!.IdToken}";
-            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
-            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/event-stream"));
-
-            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
-            if (response.IsSuccessStatusCode)
-            {
-                await ProcessEventStream(response);
-            }
-            else if (response.StatusCode == HttpStatusCode.Redirect || response.StatusCode == HttpStatusCode.TemporaryRedirect)
-            {
-                await HandleRedirect(response);
-            }
-            else
-            {
-                throw new HttpRequestException($"Failed to stream changes. Status code: {response.StatusCode}");
-            }
-        }
-        catch (Exception ex)
-        {
-        }
-    }
-
-    private async Task ProcessEventStream(HttpResponseMessage response)
-    {
-        using var stream = await response.Content.ReadAsStreamAsync();
-        using var reader = new StreamReader(stream);
-        while (!reader.EndOfStream)
-        {
-            await DownloadAndDisplayMissingMessages();
-        }
-    }
-
-    private async Task HandleRedirect(HttpResponseMessage response)
-    {
-        var redirectedLocation = response.Headers.Location?.ToString();
-        if (!string.IsNullOrEmpty(redirectedLocation))
-        {
-            // Call ListenForDatabaseChanges recursively with the new location
-            await ListenForDatabaseChanges(redirectedLocation);
-        }
-    }
-
-
-
-    /// <summary>
-    /// Start listening for message differences every 5 seconds
-    /// </summary>
-    /// <param name="listening"></param>
-    /// <returns></returns>
-    private async Task PollForDatabaseChanges(bool listening)
-    {
-        try
-        {
-            AssignMessagesForUser(scoreuser);
-        }
-        catch
-        {
-
-        }
-
-        while (listening)
-        {
-            try
-            {
-                await Task.Delay(TimeSpan.FromSeconds(5));
-                await DownloadAndDisplayMissingMessages();
-            }
-            catch
-            {
-            }
-        }
-    }
-
-    /// <summary>
-    /// Call method to download messages at the begining
-    /// </summary>
-    /// <returns></returns>
-    private void AssignMessagesForUser(ScoreUser user)
+    private void AssignAndDisplayMessagesForUser(ScoreUser user)
     {
         try
         {
@@ -151,38 +68,120 @@ public partial class ChatPage : ContentPage
         }
     }
 
+
+
     /// <summary>
-    /// Get count of messages
+    /// List for database changes at specified location
     /// </summary>
+    /// <param name="location"></param>
     /// <returns></returns>
-    private async Task<int> GetMessageCountForSelf()
+    /// <exception cref="HttpRequestException"></exception>
+    private async Task ListenForDatabaseChanges(string location)
     {
+        /*
+         * Dispose the client automaticly when not required anymore
+         */
+
         try
         {
-            using HttpClient client = new();
-            int messagesCount = await FirebaseDatabase.CountMessagesForUser(client, firebaseUser.UserID!);
-            return messagesCount;
+            using var client = new HttpClient();
+            var requestUri = $"{FirebaseEndpoints.DatabaseEndpoint}/{location}.json?auth={firebaseUser.UserID!.IdToken}";
+            var request = new HttpRequestMessage(HttpMethod.Get, requestUri);
+            request.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("text/event-stream"));
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+
+            if (response.IsSuccessStatusCode)
+            {
+                await ProcessEventStream(response);
+            }
+            else if (response.StatusCode == HttpStatusCode.Redirect || response.StatusCode == HttpStatusCode.TemporaryRedirect)
+            {
+                await HandleRedirect(response);
+            }
+            else
+            {
+                client.Dispose();
+                throw new HttpRequestException($"Failed to stream changes. Status code: {response.StatusCode}");
+            }
         }
         catch
         {
-            return 0;
         }
     }
 
     /// <summary>
-    /// Download missing messages
+    /// While listening on database changes handle the event stream
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
+    private async Task ProcessEventStream(HttpResponseMessage response)
+    {
+        using var stream = await response.Content.ReadAsStreamAsync();
+        using var reader = new StreamReader(stream);
+        while (!reader.EndOfStream)
+        {
+            await DownloadAndDisplayMissingMessages();
+        }
+    }
+
+    /// <summary>
+    /// While listening on database changes handler the redirect
+    /// </summary>
+    /// <param name="response"></param>
+    /// <returns></returns>
+    private async Task HandleRedirect(HttpResponseMessage response)
+    {
+        var redirectedLocation = response.Headers.Location?.ToString();
+        if (!string.IsNullOrEmpty(redirectedLocation))
+        {
+            // call ListenForDatabaseChanges recursively with the new location
+            await ListenForDatabaseChanges(redirectedLocation);
+        }
+    }
+
+    /// <summary>
+    /// Start listening for message differences every 5 seconds
+    /// </summary>
+    /// <param name="listening"></param>
+    /// <returns></returns>
+    private async Task PollForDatabaseChanges(bool listening)
+    {
+        try
+        {
+            AssignAndDisplayMessagesForUser(scoreuser);
+        }
+        catch
+        {
+
+        }
+
+        while (listening)
+        {
+            try
+            {
+                await Task.Delay(TimeSpan.FromSeconds(5));
+                await DownloadAndDisplayMissingMessages();
+            }
+            catch
+            {
+            }
+        }
+    }
+
+    /// <summary>
+    /// Download new messages as soon as something has changed
     /// </summary>
     /// <returns></returns>
     private async Task DownloadAndDisplayMissingMessages() 
     {
         try
         {
-            int messagesCount = await GetMessageCountForSelf();
+            using HttpClient client = new();
+            int messagesCount = await FirebaseDatabase.CountMessagesForUser(client, firebaseUser.UserID!);
+
             if (displayedMessageIds.Count < messagesCount)
             {
                 int amountOfMessagesToDownload = messagesCount - displayedMessageIds.Count;
-
-                using HttpClient client = new();
                 List<FirebaseMessage>? newDownloadedMessages = await FirebaseDatabase.DownloadAmountOfMessages(client, firebaseUser.UserID!, amountOfMessagesToDownload);
 
                 if (newDownloadedMessages?.Count != 0)
@@ -211,7 +210,6 @@ public partial class ChatPage : ContentPage
 
         }
     }
-
 
 
 
