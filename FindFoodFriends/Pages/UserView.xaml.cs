@@ -26,4 +26,6 @@ public partial class UserView : ContentView
     {
         await Navigation.PushModalAsync(new ChatPage(localuser, scoreuser, initialUserMessages));
     }
+
+    public ScoreUser GetUser() { return scoreuser; }
 }

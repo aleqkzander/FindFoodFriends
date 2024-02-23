@@ -39,6 +39,7 @@ public partial class ApplicationPage : TabbedPage
                 {
                     await DownloadAllMessagesFromUser(localUser);
                     FillTheSearchBox();
+                    FillMessagesBox();
                 }
             }
         }
@@ -46,19 +47,6 @@ public partial class ApplicationPage : TabbedPage
         {
             await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
         }
-    }
-
-    private void ShowLocalData()
-    {
-        string references = string.Empty;
-
-        foreach (string reference in localUser!.Meta!.References!)
-        {
-            references += reference + "\n";
-        }
-
-        DisplayAlert(localUser.Meta.Name, $"{references}\n" +
-            $"Position {localUser.Meta.Location!.Latitude}:{localUser.Meta.Location.Longitude}", "Ok");
     }
 
     private void FillTheSearchBox()
@@ -159,10 +147,30 @@ public partial class ApplicationPage : TabbedPage
         }
     }
 
-    private static string CalculateMatchPercentage(int totalMatches)
+    private void FillMessagesBox()
     {
-        double percentage = (double)totalMatches / 24 * 100;
-        return $"{percentage:00}%";
+        if (initialUserMessages.Count == 0) return;
+        MessagesBox.Clear();
+
+        // Maintain a set to store unique user names
+        HashSet<string> addedUsers = [];
+
+        foreach (var message in initialUserMessages)
+        {
+            if (message.Sender != localUser!.Meta!.Name) continue;
+
+            foreach (var scoreuser in userscoresList)
+            {
+                if (message.Receiver == scoreuser.DatabaseUser!.Name && !addedUsers.Contains(scoreuser.DatabaseUser.Name!))
+                {
+                    UserView dataUser = new(localUser!, scoreuser, initialUserMessages);
+                    MessagesBox.Children.Add(dataUser);
+
+                    // Add the user to the set of added users
+                    addedUsers.Add(scoreuser.DatabaseUser.Name!);
+                }
+            }
+        }
     }
 
     private void ResetLocalDataBtn_Clicked(object sender, EventArgs e)
