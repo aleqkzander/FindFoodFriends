@@ -152,23 +152,43 @@ public partial class ApplicationPage : TabbedPage
         if (initialUserMessages.Count == 0) return;
         MessagesBox.Clear();
 
-        // Maintain a set to store unique user names
+        // maintain a set to store unique user names to make sure to add a user only once
         HashSet<string> addedUsers = [];
+
+        // create a list to store local messages for each user to detect the last message
+        Dictionary<string, List<FirebaseMessage>> userMessages = [];
 
         foreach (var message in initialUserMessages)
         {
             if (message.Sender != localUser!.Meta!.Name) continue;
 
-            foreach (var scoreuser in userscoresList)
+            // avoid double lookup using try-get-value
+            if (!userMessages.TryGetValue(message.Receiver!, out List<FirebaseMessage>? value))
             {
-                if (message.Receiver == scoreuser.DatabaseUser!.Name && !addedUsers.Contains(scoreuser.DatabaseUser.Name!))
-                {
-                    UserView dataUser = new(localUser!, scoreuser, initialUserMessages);
-                    MessagesBox.Children.Add(dataUser);
+                value = ([]);
+                userMessages[message.Receiver!] = value;
+            }
 
-                    // Add the user to the set of added users
-                    addedUsers.Add(scoreuser.DatabaseUser.Name!);
-                }
+            value.Add(message);
+        }
+
+        // Create UserView for each unique receiver
+        foreach (var message in userMessages)
+        {
+            var receiverName = message.Key;
+            var messagesForReceiver = message.Value;
+
+            var lastSender = messagesForReceiver[^1].Sender;
+            var lastMessage = messagesForReceiver[^1].Message;
+
+            // Find the corresponding ScoreUser for the receiver
+            var scoreuser = userscoresList.FirstOrDefault(user => user.DatabaseUser?.Name == receiverName);
+
+            if (scoreuser != null)
+            {
+                string previewMessage = $"{lastSender!.ToUpper()}\n{lastMessage}";
+                UserView dataUser = new(localUser!, scoreuser, initialUserMessages, previewMessage);
+                MessagesBox.Children.Add(dataUser);
             }
         }
     }
@@ -198,8 +218,9 @@ public partial class ApplicationPage : TabbedPage
 
             if (deletationResult == "success")
             {
-                localUser!.Meta = null;
-                await Navigation.PushModalAsync(new MetaInformationPage(localUser));
+                FirebaseDataFile.Delete();
+                await DisplayAlert("Info", "Deine Daten wurden entfernt. Beim nächsten Login kannst du deine Daten ändern.", "Ok");
+                Environment.Exit(0);
             }
             else
             {
@@ -244,6 +265,10 @@ public partial class ApplicationPage : TabbedPage
         }
     }
 
+    /// <summary>
+    /// Call this method pass in an updated messages list
+    /// </summary>
+    /// <param name="messages"></param>
     public void UpdateInitialUserMessages(List<FirebaseMessage> messages)
     {
         if (messages.Count != 0)

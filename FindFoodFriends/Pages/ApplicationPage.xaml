@@ -8,20 +8,26 @@
 
     <ContentPage Title="Suche" IconImageSource="search.png" BackgroundColor="White">
         <ScrollView>
-            <VerticalStackLayout TranslationY="25">
-                <Label x:Name="SliderLabel" 
-                       Text="Current Values is not present" 
-                       TextColor="Black"
-                       HorizontalTextAlignment="Center"/>
 
-                <Slider x:Name="SliderRadius" 
-                        Minimum="10" 
-                        Maximum="6371" 
-                        ThumbColor="#467158"
-                        MinimumTrackColor="#ff444444"
-                        MaximumTrackColor="#ff444444"
-                        ValueChanged="SliderRadius_ValueChanged"
-                        DragCompleted="SliderRadius_DragCompleted"/>
+            <VerticalStackLayout TranslationY="25">
+
+                <Frame WidthRequest="375" Padding="10" CornerRadius="25">
+                    <VerticalStackLayout>
+                        <Label x:Name="SliderLabel" 
+                               Text="Current Values is not present" 
+                               TextColor="Black"
+                               HorizontalTextAlignment="Center"/>
+
+                        <Slider x:Name="SliderRadius" 
+                                Minimum="10" 
+                                Maximum="6371" 
+                                ThumbColor="#467158"
+                                MinimumTrackColor="#ff444444"
+                                MaximumTrackColor="#ff444444"
+                                ValueChanged="SliderRadius_ValueChanged"
+                                DragCompleted="SliderRadius_DragCompleted"/>
+                    </VerticalStackLayout>
+                </Frame>
 
                 <Image x:Name="loading" 
                        Source="loading.gif" 
@@ -29,11 +35,12 @@
                        IsAnimationPlaying="False" 
                        IsVisible="true"/>
 
-                <VerticalStackLayout x:Name="SearchBox" Padding="25" Spacing="25">
+                <VerticalStackLayout x:Name="SearchBox" Padding="15" Spacing="25">
 
                     <!--This will be filled with user from the database-->
 
                 </VerticalStackLayout>
+                
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage>
@@ -41,7 +48,7 @@
 
     <ContentPage Title="Nachrichten" IconImageSource="messages.png" BackgroundColor="White">
         <ScrollView>
-            <VerticalStackLayout x:Name="MessagesBox" Padding="25" Spacing="65">
+            <VerticalStackLayout x:Name="MessagesBox" Padding="15" Spacing="25">
 
                 <!--This will be filled with user from the database-->
 
@@ -52,7 +59,7 @@
 
     <ContentPage Title="Einstellungen" IconImageSource="settings.png" BackgroundColor="White">
         <ScrollView >
-            <VerticalStackLayout x:Name="SettingsBox" Padding="25" Spacing="25">
+            <VerticalStackLayout x:Name="SettingsBox" Padding="15" Spacing="25">
 
                 <Button x:Name="ChangeUserDataBtn"
                         Text="Benutzerdaten ändern"

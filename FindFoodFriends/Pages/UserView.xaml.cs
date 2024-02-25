@@ -22,6 +22,18 @@ public partial class UserView : ContentView
         initialUserMessages = messages;
     }
 
+    public UserView(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages, string lastmessage)
+    {
+        InitializeComponent();
+        this.localuser = localuser;
+        this.scoreuser = scoreuser;
+        UsernameLabel.Text = scoreuser.DatabaseUser!.Name;
+        ScoreLabel.IsVisible = false;
+        DetailsLabel.Text = lastmessage;
+        initialUserMessages = messages;
+    }
+
+
     private async void Chat_Btn_Clicked(object sender, EventArgs e)
     {
         await Navigation.PushModalAsync(new ChatPage(localuser, scoreuser, initialUserMessages));
