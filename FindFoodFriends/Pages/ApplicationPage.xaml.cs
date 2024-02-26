@@ -131,7 +131,7 @@ public partial class ApplicationPage : TabbedPage
                 if (scoreclass!.DatabaseUser.Name != localUser.Meta.Name && isWithinRadius)
                 {
                     // Create a user data viewmodel
-                    UserView dataUser = new(localUser, scoreclass, initialUserMessages);
+                    ContactCard dataUser = new(localUser, scoreclass, initialUserMessages);
 
                     // Add to SearchView
                     SearchBox.Children.Add(dataUser);
@@ -187,7 +187,7 @@ public partial class ApplicationPage : TabbedPage
             if (scoreuser != null)
             {
                 string previewMessage = $"{lastSender!.ToUpper()}\n{lastMessage}";
-                UserView dataUser = new(localUser!, scoreuser, initialUserMessages, previewMessage);
+                ContactCard dataUser = new(localUser!, scoreuser, initialUserMessages, previewMessage);
                 MessagesBox.Children.Add(dataUser);
             }
         }

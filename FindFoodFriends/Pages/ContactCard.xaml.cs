@@ -5,13 +5,13 @@
 using FindFoodFriends.Firebase.Objects;
 namespace FindFoodFriends.Pages;
 
-public partial class UserView : ContentView
+public partial class ContactCard : ContentView
 {
     private readonly FirebaseUser localuser;
     private readonly ScoreUser scoreuser;
     private readonly List<FirebaseMessage> initialUserMessages;
 
-	public UserView(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages)
+	public ContactCard(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages)
 	{
 		InitializeComponent();
         this.localuser = localuser;
@@ -22,7 +22,7 @@ public partial class UserView : ContentView
         initialUserMessages = messages;
     }
 
-    public UserView(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages, string lastmessage)
+    public ContactCard(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages, string lastmessage)
     {
         InitializeComponent();
         this.localuser = localuser;

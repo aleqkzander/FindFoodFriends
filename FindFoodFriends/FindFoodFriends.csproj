@@ -116,6 +116,12 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Pages\ContactCard.xaml.cs">
+	    <DependentUpon>ContactCard.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Pages\ChatPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
