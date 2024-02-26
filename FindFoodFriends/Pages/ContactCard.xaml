@@ -3,17 +3,23 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="FindFoodFriends.Pages.ContactCard">
 
-    <Frame BackgroundColor="Pink" HeightRequest="150" CornerRadius="10">
+    <Frame BackgroundColor="#65a27d" HeightRequest="165">
         <ScrollView>
-            <VerticalStackLayout Spacing="20">
-                
-                <HorizontalStackLayout Spacing="15">
-                    <Button x:Name="Chat_Btn" Text="Chatte mit" FontSize="15" Clicked="Chat_Btn_Clicked" HorizontalOptions="End"/>
-                    <Label x:Name="UsernameLabel" FontSize="35" TextColor="Black"/>
+            <VerticalStackLayout>
+                <HorizontalStackLayout Spacing="90">
+                    <Label x:Name="UsernameLabel" FontSize="25" FontAttributes="Bold" TextColor="#444444" VerticalTextAlignment="Center"/>
+                    <Button x:Name="Chat_Btn" 
+                            Text="Chat" 
+                            TextColor="Black" 
+                            FontAttributes="Bold"
+                            HeightRequest="47" 
+                            FontSize="25" 
+                            Clicked="Chat_Btn_Clicked" 
+                            BackgroundColor="#467158"/>
                 </HorizontalStackLayout>
-                
-                <Label x:Name="ScoreLabel" FontSize="20" TextColor="Black" />
-                <Label x:Name="DetailsLabel" FontSize="15" TextColor="Black" />
+
+                <Label x:Name="ScoreLabel" FontSize="20" FontAttributes="Bold" TextColor="#467158"/>
+                <Label x:Name="DetailsLabel" FontSize="20" TextColor="#467158"/>
             </VerticalStackLayout>
         </ScrollView>
     </Frame>
