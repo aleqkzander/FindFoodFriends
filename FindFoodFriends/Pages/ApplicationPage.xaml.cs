@@ -1,6 +1,7 @@
 using FindFoodFriends.Firebase;
 using FindFoodFriends.Firebase.Objects;
 using FindFoodFriends.Firebase.Utility;
+using System.Runtime.InteropServices;
 
 namespace FindFoodFriends.Pages;
 
@@ -152,41 +153,33 @@ public partial class ApplicationPage : TabbedPage
         if (initialUserMessages.Count == 0) return;
         MessagesBox.Clear();
 
-        // maintain a set to store unique user names to make sure to add a user only once
-        HashSet<string> addedUsers = [];
-
-        // create a list to store local messages for each user to detect the last message
-        Dictionary<string, List<FirebaseMessage>> userMessages = [];
-
+        Dictionary<string, FirebaseMessage> lastMessages = [];
         foreach (var message in initialUserMessages)
         {
-            if (message.Sender != localUser!.Meta!.Name) continue;
-
-            // avoid double lookup using try-get-value
-            if (!userMessages.TryGetValue(message.Receiver!, out List<FirebaseMessage>? value))
+            if (message.Sender == localUser!.Meta!.Name || message.Receiver == localUser!.Meta!.Name)
             {
-                value = ([]);
-                userMessages[message.Receiver!] = value;
-            }
+                // Update lastMessages for the sender
+                if (lastMessages.TryGetValue(message.Sender!, out var existingMessage) && message.Timestamp != existingMessage.Timestamp)
+                    lastMessages[message.Sender!] = message;
+                else
+                    lastMessages[message.Sender!] = message;
 
-            value.Add(message);
+                // Update lastMessages only for the receiver
+                if (lastMessages.TryGetValue(message.Receiver!, out var existingMessage2) && message.Timestamp != existingMessage2.Timestamp)
+                    lastMessages[message.Receiver!] = message;
+                else
+                    lastMessages[message.Receiver!] = message;
+            }
         }
 
-        // Create UserView for each unique receiver
-        foreach (var message in userMessages)
+        foreach (var kvp in lastMessages)
         {
-            var receiverName = message.Key;
-            var messagesForReceiver = message.Value;
-
-            var lastSender = messagesForReceiver[^1].Sender;
-            var lastMessage = messagesForReceiver[^1].Message;
-
-            // Find the corresponding ScoreUser for the receiver
-            var scoreuser = userscoresList.FirstOrDefault(user => user.DatabaseUser?.Name == receiverName);
-
-            if (scoreuser != null)
+            var userName = kvp.Key;
+            var lastMessage = kvp.Value;
+            var scoreuser = userscoresList.FirstOrDefault(user => user.DatabaseUser?.Name == userName);
+            if (scoreuser != null && scoreuser.DatabaseUser!.Name != localUser!.Meta!.Name)
             {
-                string previewMessage = $"{lastSender!.ToUpper()}\n{lastMessage}";
+                string previewMessage = $"{lastMessage.Sender!.ToUpper()}\n{lastMessage.Message}";
                 ContactCard dataUser = new(localUser!, scoreuser, initialUserMessages, previewMessage);
                 MessagesBox.Children.Add(dataUser);
             }
