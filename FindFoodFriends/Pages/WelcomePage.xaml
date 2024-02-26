@@ -5,9 +5,9 @@
              Title=""
              BackgroundColor="White">
 
-    <VerticalStackLayout Padding="25" Spacing="65">
-        <Image Source="applogo.png"/>
-        <Image Source="logo.png" HeightRequest="400" />
+    <VerticalStackLayout Padding="25" Spacing="50" VerticalOptions="CenterAndExpand">
+        <Image Source="applogo.png" Scale="1.05"/>
+        <Image Source="logo.png"/>
 
         <VerticalStackLayout Spacing="25">
             <Button x:Name="RegisterBtn" 
@@ -25,5 +25,4 @@
                     Clicked="LoginBtn_Clicked" />
         </VerticalStackLayout>
     </VerticalStackLayout>
-
 </ContentPage>

@@ -6,15 +6,21 @@
              BackgroundColor="White">
 
     <ScrollView>
-        <VerticalStackLayout Padding="25" Spacing="65">
-            <Image Source="applogo.png"/>
+        <VerticalStackLayout Padding="25" Spacing="150" VerticalOptions="Start">
+            <Image Source="applogo.png" Scale="1.05" TranslationY="20"/>
 
-            <VerticalStackLayout Spacing="15">
+            <VerticalStackLayout Spacing="25">
+                <Label Text="Login" 
+                       FontSize="30"
+                       TextColor="#467158"
+                       TranslationY="-15"
+                       HorizontalOptions="Center" />
+
                 <Entry x:Name="MailEntry" 
                    HorizontalOptions="Center" 
                    Placeholder="Mailadresse"
-                   PlaceholderColor="#467158"
-                   FontSize="35"
+                   PlaceholderColor="#ff444444"
+                   FontSize="30"
                    WidthRequest="300"
                    HorizontalTextAlignment="Center"
                    TextColor="#ff444444" />
@@ -24,17 +30,20 @@
                    Placeholder="Passwort"
                    PlaceholderColor="#444444"
                    IsPassword="True" 
-                   FontSize="35"
+                   FontSize="30"
                    WidthRequest="300"
                    HorizontalTextAlignment="Center"
                    TextColor="#ff444444"/>
-            </VerticalStackLayout>
 
-            <Button x:Name="LoginBtn" Text="Bestätigen"
-                BackgroundColor="#65a27d"
-                TextColor="#444444"
-                FontSize="30"
-                Clicked="LoginBtn_Clicked" />
+                <Button x:Name="LoginBtn" 
+                        Text="Bestätigen"
+                        BackgroundColor="#65a27d"
+                        TextColor="#444444"
+                        FontSize="30"
+                        Clicked="LoginBtn_Clicked" 
+                        TranslationY="25"/>
+            </VerticalStackLayout>
+        
         </VerticalStackLayout>
     </ScrollView>
     
