@@ -16,19 +16,19 @@ public partial class ContactCard : ContentView
 		InitializeComponent();
         this.localuser = localuser;
         this.scoreuser = scoreuser;
-        UsernameLabel.Text = scoreuser.DatabaseUser!.Name;
+        Chat_Btn.Text = $"Chatten mit {scoreuser.DatabaseUser!.Name}";
         ScoreLabel.Text = scoreuser.TotalMatchesPercentage;
         DetailsLabel.Text = scoreuser.TrueMatchesEntry;
         initialUserMessages = messages;
     }
 
-    public ContactCard(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages, string lastmessage)
+    public ContactCard(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages, string name, string lastmessage)
     {
         InitializeComponent();
         this.localuser = localuser;
         this.scoreuser = scoreuser;
-        UsernameLabel.Text = scoreuser.DatabaseUser!.Name;
-        ScoreLabel.IsVisible = false;
+        Chat_Btn.Text = $"{scoreuser.DatabaseUser!.Name}";
+        ScoreLabel.Text = name;
         DetailsLabel.Text = lastmessage;
         initialUserMessages = messages;
     }

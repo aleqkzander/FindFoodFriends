@@ -172,15 +172,13 @@ public partial class ApplicationPage : TabbedPage
             }
         }
 
-        foreach (var kvp in lastMessages)
+        foreach (var message in lastMessages)
         {
-            var userName = kvp.Key;
-            var lastMessage = kvp.Value;
-            var scoreuser = userscoresList.FirstOrDefault(user => user.DatabaseUser?.Name == userName);
+            var lastMessage = message.Value;
+            var scoreuser = userscoresList.FirstOrDefault(user => user.DatabaseUser?.Name == message.Key);
             if (scoreuser != null && scoreuser.DatabaseUser!.Name != localUser!.Meta!.Name)
             {
-                string previewMessage = $"{lastMessage.Sender!.ToUpper()}\n{lastMessage.Message}";
-                ContactCard dataUser = new(localUser!, scoreuser, initialUserMessages, previewMessage);
+                ContactCard dataUser = new(localUser!, scoreuser, initialUserMessages,  lastMessage.Sender!, lastMessage.Message!);
                 MessagesBox.Children.Add(dataUser);
             }
         }
