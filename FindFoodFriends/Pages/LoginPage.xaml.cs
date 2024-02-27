@@ -94,6 +94,7 @@ public partial class LoginPage : ContentPage
 
     private void SetStatusLogin()
     {
+        LoginBtn.IsEnabled = true;
         MailEntry.IsEnabled = true;
         PasswordEntry.IsEnabled = true;
         LoginBtn.Text = "Bestätigen";
@@ -101,6 +102,7 @@ public partial class LoginPage : ContentPage
 
     private void SetStatusExecutingRequest()
     {
+        LoginBtn.IsEnabled = false;
         MailEntry.IsEnabled = false;
         PasswordEntry.IsEnabled = false;
         LoginBtn.Text = "Bitte warten";

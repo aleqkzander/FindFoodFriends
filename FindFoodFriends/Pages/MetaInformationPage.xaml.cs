@@ -203,73 +203,73 @@ public partial class MetaInformationPage : ContentPage
 
     private void CollectReferences()
     {
-        string traditionellerVeganer = "Traditioneller-Veganer=" + TraditionellerVeganerCheckBox.IsChecked;
+        string traditionellerVeganer = "traditioneller-veganer=" + TraditionellerVeganerCheckBox.IsChecked;
         userReferences.Add(traditionellerVeganer);
 
-        string rohVeganer = "Roh-Veganer=" + RohVeganerCheckBox.IsChecked;
+        string rohVeganer = "roh-veganer=" + RohVeganerCheckBox.IsChecked;
         userReferences.Add(rohVeganer);
 
-        string freeganer = "Freeganer=" + FreeganerCheckBox.IsChecked;
+        string freeganer = "freeganer=" + FreeganerCheckBox.IsChecked;
         userReferences.Add(freeganer);
 
-        string cleaneater = "Clean-Eater=" + CleanEaterCheckBox.IsChecked;
+        string cleaneater = "clean-eater=" + CleanEaterCheckBox.IsChecked;
         userReferences.Add(cleaneater);
 
-        string ayurveda = "Ayurveda=" + AyurvedaCheckBox.IsChecked;
+        string ayurveda = "ayurveda=" + AyurvedaCheckBox.IsChecked;
         userReferences.Add(ayurveda);
 
-        string basisch = "Basisch=" + BasischCheckBox.IsChecked;
+        string basisch = "basisch=" + BasischCheckBox.IsChecked;
         userReferences.Add(basisch);
 
-        string slowFood = "Slow-Food=" + SlowFoodCheckBox.IsChecked;
+        string slowFood = "slow-food=" + SlowFoodCheckBox.IsChecked;
         userReferences.Add(slowFood);
 
-        string zuckerfrei = "Zuckerfrei=" + ZuckerfreiCheckBox.IsChecked;
+        string zuckerfrei = "zuckerfrei=" + ZuckerfreiCheckBox.IsChecked;
         userReferences.Add(zuckerfrei);
 
-        string keinWeißmehl = "Weißmehlfrei=" + WeissmehlfreiCheckBox.IsChecked;
+        string keinWeißmehl = "weißmehlfrei=" + WeissmehlfreiCheckBox.IsChecked;
         userReferences.Add(keinWeißmehl);
 
-        string saisonal = "Saisonal=" + SaisonalCheckBox.IsChecked;
+        string saisonal = "saisonal=" + SaisonalCheckBox.IsChecked;
         userReferences.Add(saisonal);
 
-        string regional = "Regional=" + RegionalCheckBox.IsChecked;
+        string regional = "regional=" + RegionalCheckBox.IsChecked;
         userReferences.Add(regional);
 
-        string fairtrade = "Fairtrade=" + FairtradeCheckBox.IsChecked;
+        string fairtrade = "fairtrade=" + FairtradeCheckBox.IsChecked;
         userReferences.Add(fairtrade);
 
-        string unverpackt = "Unverpackt=" + UnverpacktCheckBox.IsChecked;
+        string unverpackt = "unverpackt=" + UnverpacktCheckBox.IsChecked;
         userReferences.Add(unverpackt);
 
-        string bio = "Bio=" + BioCheckBox.IsChecked;
+        string bio = "bio=" + BioCheckBox.IsChecked;
         userReferences.Add(bio);
 
-        string keineZusatzstoffe = "Keine-Zusatzstoff=" + KeineZusatzstoffeCheckBox.IsChecked;
+        string keineZusatzstoffe = "keine-zusatzstoff=" + KeineZusatzstoffeCheckBox.IsChecked;
         userReferences.Add(keineZusatzstoffe);
 
-        string keinGluten = "Kein-Gluten=" + GlutenCheckBox.IsChecked;
+        string keinGluten = "kein-gluten=" + GlutenCheckBox.IsChecked;
         userReferences.Add(keinGluten);
 
-        string keinSesam = "Kein-Sesam=" + SesamCheckBox.IsChecked;
+        string keinSesam = "kein-sesam=" + SesamCheckBox.IsChecked;
         userReferences.Add(keinSesam);
 
-        string keinSenf = "Kein-Senf=" + SenfCheckBox.IsChecked;
+        string keinSenf = "kein-senf=" + SenfCheckBox.IsChecked;
         userReferences.Add(keinSenf);
 
-        string keineLupine = "Keine-Lupine=" + LupineCheckBox.IsChecked;
+        string keineLupine = "keine-lupine=" + LupineCheckBox.IsChecked;
         userReferences.Add(keineLupine);
 
-        string keineSulfite = "Keine-Sulfite=" + SulfiteCheckBox.IsChecked;
+        string keineSulfite = "keine-sulfite=" + SulfiteCheckBox.IsChecked;
         userReferences.Add(keineSulfite);
 
-        string keineNüsse = "Keine-Nüsse=" + NuesseCheckBox.IsChecked;
+        string keineNüsse = "keine-nüsse=" + NuesseCheckBox.IsChecked;
         userReferences.Add(keineNüsse);
 
-        string keinSoja = "Kein-Soja=" + SojaCheckBox.IsChecked;
+        string keinSoja = "kein-soja=" + SojaCheckBox.IsChecked;
         userReferences.Add(keinSoja);
 
-        string keinSellerie = "Kein-Sellerie=" + SellerieCheckBox.IsChecked;
+        string keinSellerie = "kein-sellerie=" + SellerieCheckBox.IsChecked;
         userReferences.Add(keinSellerie);
     }
 

@@ -54,7 +54,7 @@
 
                 <Button x:Name="DatenschutzerklärungButton" Text="Lesen"
                         BackgroundColor="#65a27d"
-                        TextColor="#ff444444"
+                        TextColor="White"
                         FontSize="30"
                         Clicked="DatenschutzerklärungButton_Clicked"/>
 
@@ -78,7 +78,7 @@
 
                 <Button x:Name="AuthenticateBtn" Text="Registrieren"
                 BackgroundColor="#65a27d"
-                TextColor="#444444"
+                TextColor="White"
                 FontSize="30"
                 Clicked="AuthenticateBtn_Clicked" />
             </VerticalStackLayout>

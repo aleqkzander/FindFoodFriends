@@ -71,16 +71,14 @@ public partial class AuthenticationPage : ContentPage
     {
         try
         {
-            AuthenticateBtn.IsEnabled = false;
-            AuthenticateBtn.Text = "Authentifiziere...";
+            SetStatusAuthenticating();
 
             FirebaseUserID? firebaseUserId = await FirebaseAuthentication.RegisterUserAsync(mail!, password)!;
 
             if (firebaseUserId == null)
             {
                 await DisplayAlert("Info", "Diese Benutzerdaten sind nicht gültig...", "Ok");
-                AuthenticateBtn.IsEnabled = true;
-                AuthenticateBtn.Text = "Registrieren";
+                SetStatusIdle();
                 return;
             }
             else
@@ -92,8 +90,19 @@ public partial class AuthenticationPage : ContentPage
         catch
         {
             await DisplayAlert("Error", "Oh das ist etwas schief gelaufen...", "Ok");
-            AuthenticateBtn.IsEnabled = true;
-            AuthenticateBtn.Text = "Registrieren";
+            SetStatusIdle();
         }
+    }
+
+    private void SetStatusAuthenticating()
+    {
+        AuthenticateBtn.IsEnabled = false;
+        AuthenticateBtn.Text = "Authentifiziere...";
+    }
+
+    private void SetStatusIdle()
+    {
+        AuthenticateBtn.IsEnabled = true;
+        AuthenticateBtn.Text = "Registrieren";
     }
 }

@@ -13,14 +13,14 @@
             <Button x:Name="RegisterBtn" 
                     Text="Registrieren"
                     FontSize="30"
-                    TextColor="#444444"
+                    TextColor="White"
                     BackgroundColor="#65a27d"
                     Clicked="RegisterBtn_Clicked"  />
 
             <Button x:Name="LoginBtn" 
                     Text="Anmelden"
                     FontSize="30"
-                    TextColor="#444444"
+                    TextColor="White"
                     BackgroundColor="#65a27d"
                     Clicked="LoginBtn_Clicked" />
         </VerticalStackLayout>

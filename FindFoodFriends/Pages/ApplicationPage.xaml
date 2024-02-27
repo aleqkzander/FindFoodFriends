@@ -11,7 +11,7 @@
 
             <VerticalStackLayout TranslationY="25">
 
-                <Frame WidthRequest="350" Padding="10" CornerRadius="25">
+                <Frame BorderColor="#467158" WidthRequest="350" Padding="10" CornerRadius="25">
                     <VerticalStackLayout>
                         <Label x:Name="SliderLabel" 
                                Text="Current Values is not present" 
@@ -59,15 +59,28 @@
 
     <ContentPage Title="Einstellungen" IconImageSource="settings.png" BackgroundColor="White">
         <ScrollView >
-            <VerticalStackLayout x:Name="SettingsBox" Padding="15" Spacing="25">
+            <VerticalStackLayout x:Name="SettingsBox" Padding="25" Spacing="50" TranslationY="25">
 
                 <Button x:Name="ChangeUserDataBtn"
                         Text="Benutzerdaten ändern"
+                        FontSize="30"
+                        TextColor="White"
+                        BackgroundColor="#65a27d"
                         Clicked="ChangeUserDataBtn_Clicked"/>
 
                 <Button x:Name="ResetLocalDataBtn"
                         Text="App zurücksetzen"
+                        FontSize="30"
+                        TextColor="White"
+                        BackgroundColor="#65a27d"
                         Clicked="ResetLocalDataBtn_Clicked"/>
+
+                <Button x:Name="DataPrivacyBtn"
+                        Text="Datenschutzerklärung"
+                        FontSize="30"
+                        TextColor="White"
+                        BackgroundColor="#65a27d"
+                        Clicked="DataPrivacyBtn_Clicked"/>
 
             </VerticalStackLayout>
         </ScrollView>

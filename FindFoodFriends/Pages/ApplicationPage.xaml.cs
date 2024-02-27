@@ -270,4 +270,9 @@ public partial class ApplicationPage : TabbedPage
             }
         }
     }
+
+    private void DataPrivacyBtn_Clicked(object sender, EventArgs e)
+    {
+        DisplayAlert("Privacy", "Hier wird was steht", "Ok");
+    }
 }

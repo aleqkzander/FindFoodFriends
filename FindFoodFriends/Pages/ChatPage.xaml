@@ -5,50 +5,54 @@
              Title=""
              BackgroundColor="White">
 
-    <VerticalStackLayout Padding="25" Spacing="25">
+    <VerticalStackLayout Padding="5" Spacing="5" VerticalOptions="FillAndExpand">
         
         <VerticalStackLayout.GestureRecognizers>
             <SwipeGestureRecognizer Direction="Right" Swiped="SwipeGestureRecognizer_Swiped"/>
         </VerticalStackLayout.GestureRecognizers>
-
+        
         <Image x:Name="loading" 
                Source="loading.gif" 
                HeightRequest="50"
                IsAnimationPlaying="False" 
                IsVisible="true"/>
-        
-        <Label 
+
+        <Frame CornerRadius="25">
+            <Label 
             x:Name="Chatuser"
             FontSize="35"
             TextColor="#467158" 
             HorizontalTextAlignment="Center"/>
+        </Frame>
 
-        <ScrollView x:Name="ScrollView" HeightRequest="500">
-            <VerticalStackLayout x:Name="MessageContainer" Spacing="10">
-                <!-- Add messages here -->
-            </VerticalStackLayout>
-        </ScrollView>
-
-        <VerticalStackLayout Spacing="5">
-            
-            <ScrollView>
-                <Frame HeightRequest="100">
-                    <Editor
-                x:Name="MessageEntry"
-                Placeholder="Enter your message"
-                PlaceholderColor="#444444"
-                TextColor="#444444"/>
-                </Frame>
+        <Frame CornerRadius="25" VerticalOptions="CenterAndExpand" HeightRequest="380">
+            <ScrollView x:Name="ScrollView">
+                <VerticalStackLayout x:Name="MessageContainer" Spacing="10">
+                    <!-- Add messages here -->
+                </VerticalStackLayout>
             </ScrollView>
-            
-            <Button 
+        </Frame>
+
+        <Frame CornerRadius="25">
+            <VerticalStackLayout Spacing="5">
+                <ScrollView>
+                    <Frame HeightRequest="75">
+                        <Editor
+                        x:Name="MessageEntry"
+                        Placeholder="Enter your message"
+                        PlaceholderColor="#444444"
+                        TextColor="#444444"/>
+                    </Frame>
+                </ScrollView>
+
+                <Button 
                 x:Name="SendBtn"
                 Text="Abschicken"
                 BackgroundColor="#65a27d"
-                TextColor="#444444"
+                TextColor="White"
                 Clicked="SendBtn_Clicked"/>
-            
-        </VerticalStackLayout>
-
+            </VerticalStackLayout>
+        </Frame>
+        
     </VerticalStackLayout>
 </ContentPage>
