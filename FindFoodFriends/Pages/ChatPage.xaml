@@ -26,7 +26,7 @@
 
         <Line Stroke="#467158"  X1="0" Y1="0" X2="300" Y2="0" HorizontalOptions="Center" StrokeThickness="1.5"></Line>
 
-        <ScrollView x:Name="ScrollView" HeightRequest="375">
+        <ScrollView x:Name="ScrollView" HeightRequest="425">
             <VerticalStackLayout x:Name="MessageContainer" Spacing="5">
                 <!-- Add messages here -->
             </VerticalStackLayout>
