@@ -8,10 +8,8 @@
 
     <ContentPage Title="Suche" IconImageSource="search.png" BackgroundColor="White">
         <ScrollView>
-
-            <VerticalStackLayout TranslationY="25">
-
-                <Frame BorderColor="#467158" WidthRequest="350" Padding="10" CornerRadius="25">
+            <VerticalStackLayout Padding="10" Spacing="20" TranslationY="25">
+                <Frame BorderColor="#467158" CornerRadius="25">
                     <VerticalStackLayout>
                         <Label x:Name="SliderLabel" 
                                Text="Current Values is not present" 
@@ -35,12 +33,10 @@
                        IsAnimationPlaying="False" 
                        IsVisible="true"/>
 
-                <VerticalStackLayout x:Name="SearchBox" Padding="15" Spacing="25">
-
+                <VerticalStackLayout x:Name="SearchBox" Padding="5" Spacing="15">
                     <!--This will be filled with user from the database-->
-
                 </VerticalStackLayout>
-                
+
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage>
@@ -48,10 +44,8 @@
 
     <ContentPage Title="Nachrichten" IconImageSource="messages.png" BackgroundColor="White">
         <ScrollView>
-            <VerticalStackLayout x:Name="MessagesBox" Padding="15" Spacing="25">
-
+            <VerticalStackLayout x:Name="MessagesBox" Padding="10" Spacing="20" TranslationY="25">
                 <!--This will be filled with user from the database-->
-
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage>
@@ -59,7 +53,7 @@
 
     <ContentPage Title="Einstellungen" IconImageSource="settings.png" BackgroundColor="White">
         <ScrollView >
-            <VerticalStackLayout x:Name="SettingsBox" Padding="25" Spacing="50" TranslationY="25">
+            <VerticalStackLayout x:Name="SettingsBox" Padding="10" Spacing="20" TranslationY="25">
 
                 <Button x:Name="ChangeUserDataBtn"
                         Text="Benutzerdaten ändern"
