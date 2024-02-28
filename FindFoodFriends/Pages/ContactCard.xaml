@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="FindFoodFriends.Pages.ContactCard">
+
+    <Frame BorderColor="#467158" BackgroundColor="White" HeightRequest="185" CornerRadius="25">
+        <ScrollView>
+            <VerticalStackLayout Spacing="15">
+                
+                <Button x:Name="Chat_Btn" 
+                            Text="Chat" 
+                            TextColor="White"
+                            FontSize="20"
+                            BorderWidth="3"
+                            Clicked="Chat_Btn_Clicked" 
+                            BackgroundColor="#65a27d"
+                            CornerRadius="100"/>
+
+                <VerticalStackLayout>
+                    <Label x:Name="ScoreLabel" FontSize="20" FontAttributes="Bold" TextColor="#467158"/>
+                    <Label x:Name="DetailsLabel" FontSize="20" TextColor="#467158"/>
+                </VerticalStackLayout>
+                
+            </VerticalStackLayout>
+        </ScrollView>
+    </Frame>
+
+</ContentView>

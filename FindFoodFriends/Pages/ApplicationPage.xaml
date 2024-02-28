@@ -8,20 +8,24 @@
 
     <ContentPage Title="Suche" IconImageSource="search.png" BackgroundColor="White">
         <ScrollView>
-            <VerticalStackLayout TranslationY="25">
-                <Label x:Name="SliderLabel" 
-                       Text="Current Values is not present" 
-                       TextColor="Black"
-                       HorizontalTextAlignment="Center"/>
+            <VerticalStackLayout Padding="10" Spacing="20" TranslationY="25">
+                <Frame BorderColor="#467158" CornerRadius="25">
+                    <VerticalStackLayout>
+                        <Label x:Name="SliderLabel" 
+                               Text="Current Values is not present" 
+                               TextColor="Black"
+                               HorizontalTextAlignment="Center"/>
 
-                <Slider x:Name="SliderRadius" 
-                        Minimum="10" 
-                        Maximum="6371" 
-                        ThumbColor="#467158"
-                        MinimumTrackColor="#ff444444"
-                        MaximumTrackColor="#ff444444"
-                        ValueChanged="SliderRadius_ValueChanged"
-                        DragCompleted="SliderRadius_DragCompleted"/>
+                        <Slider x:Name="SliderRadius" 
+                                Minimum="10" 
+                                Maximum="6371" 
+                                ThumbColor="#467158"
+                                MinimumTrackColor="#ff444444"
+                                MaximumTrackColor="#ff444444"
+                                ValueChanged="SliderRadius_ValueChanged"
+                                DragCompleted="SliderRadius_DragCompleted"/>
+                    </VerticalStackLayout>
+                </Frame>
 
                 <Image x:Name="loading" 
                        Source="loading.gif" 
@@ -29,11 +33,10 @@
                        IsAnimationPlaying="False" 
                        IsVisible="true"/>
 
-                <VerticalStackLayout x:Name="SearchBox" Padding="25" Spacing="25">
-
+                <VerticalStackLayout x:Name="SearchBox" Padding="5" Spacing="15">
                     <!--This will be filled with user from the database-->
-
                 </VerticalStackLayout>
+
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage>
@@ -41,10 +44,8 @@
 
     <ContentPage Title="Nachrichten" IconImageSource="messages.png" BackgroundColor="White">
         <ScrollView>
-            <VerticalStackLayout x:Name="MessagesBox" Padding="25" Spacing="65">
-
+            <VerticalStackLayout x:Name="MessagesBox" Padding="10" Spacing="20" TranslationY="25">
                 <!--This will be filled with user from the database-->
-
             </VerticalStackLayout>
         </ScrollView>
     </ContentPage>
@@ -52,15 +53,28 @@
 
     <ContentPage Title="Einstellungen" IconImageSource="settings.png" BackgroundColor="White">
         <ScrollView >
-            <VerticalStackLayout x:Name="SettingsBox" Padding="25" Spacing="25">
+            <VerticalStackLayout x:Name="SettingsBox" Padding="10" Spacing="20" TranslationY="25">
 
                 <Button x:Name="ChangeUserDataBtn"
                         Text="Benutzerdaten ändern"
+                        FontSize="30"
+                        TextColor="White"
+                        BackgroundColor="#65a27d"
                         Clicked="ChangeUserDataBtn_Clicked"/>
 
                 <Button x:Name="ResetLocalDataBtn"
                         Text="App zurücksetzen"
+                        FontSize="30"
+                        TextColor="White"
+                        BackgroundColor="#65a27d"
                         Clicked="ResetLocalDataBtn_Clicked"/>
+
+                <Button x:Name="DataPrivacyBtn"
+                        Text="Datenschutzerklärung"
+                        FontSize="30"
+                        TextColor="White"
+                        BackgroundColor="#65a27d"
+                        Clicked="DataPrivacyBtn_Clicked"/>
 
             </VerticalStackLayout>
         </ScrollView>

@@ -100,7 +100,6 @@ public partial class ChatPage : ContentPage
             else
             {
                 client.Dispose();
-                throw new HttpRequestException($"Failed to stream changes. Status code: {response.StatusCode}");
             }
         }
         catch
@@ -133,37 +132,7 @@ public partial class ChatPage : ContentPage
         var redirectedLocation = response.Headers.Location?.ToString();
         if (!string.IsNullOrEmpty(redirectedLocation))
         {
-            // call ListenForDatabaseChanges recursively with the new location
             await ListenForDatabaseChanges(redirectedLocation);
-        }
-    }
-
-    /// <summary>
-    /// (do not use) Start listening for message differences every 5 seconds
-    /// </summary>
-    /// <param name="listening"></param>
-    /// <returns></returns>
-    private async Task PollForDatabaseChanges(bool listening)
-    {
-        try
-        {
-            AssignAndDisplayMessagesForUser(scoreuser);
-        }
-        catch
-        {
-
-        }
-
-        while (listening)
-        {
-            try
-            {
-                await Task.Delay(TimeSpan.FromSeconds(5));
-                await DownloadAndDisplayMissingMessages();
-            }
-            catch
-            {
-            }
         }
     }
 

@@ -7,11 +7,11 @@
 
     <ScrollView>
         <VerticalStackLayout Padding="25" Spacing="65">
-            <Image Source="applogo.png"/>
+            <Image Source="applogo.png" Scale="1.05" TranslationY="20"/>
 
             <VerticalStackLayout Spacing="15">
                 <Label Text="Benutzerdaten" 
-                       FontSize="35"
+                       FontSize="30"
                        TextColor="#467158" 
                        HorizontalTextAlignment="Center"/>
 
@@ -48,14 +48,14 @@
 
             <VerticalStackLayout Spacing="15">
                 <Label Text="Datenschutzerklärung" 
-                       FontSize="35"
+                       FontSize="30"
                        TextColor="#467158" 
                        HorizontalTextAlignment="Center"/>
 
                 <Button x:Name="DatenschutzerklärungButton" Text="Lesen"
                         BackgroundColor="#65a27d"
-                        TextColor="#ff444444"
-                        FontSize="35"
+                        TextColor="White"
+                        FontSize="30"
                         Clicked="DatenschutzerklärungButton_Clicked"/>
 
                 <HorizontalStackLayout Spacing="35">
@@ -71,14 +71,14 @@
             </VerticalStackLayout>
 
             <VerticalStackLayout Spacing="15">
-                <Label Text="Eingaben bestätigen" 
-                       FontSize="35"
+                <Label Text="Eingabe bestätigen" 
+                       FontSize="30"
                        TextColor="#467158" 
                        HorizontalTextAlignment="Center"/>
 
                 <Button x:Name="AuthenticateBtn" Text="Registrieren"
                 BackgroundColor="#65a27d"
-                TextColor="#444444"
+                TextColor="White"
                 FontSize="30"
                 Clicked="AuthenticateBtn_Clicked" />
             </VerticalStackLayout>

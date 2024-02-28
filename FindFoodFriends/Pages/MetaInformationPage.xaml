@@ -532,7 +532,7 @@
 
                 <Button x:Name="SendMetaBtn" Text="Senden"
                     BackgroundColor="#65a27d"
-                    TextColor="#444444"
+                    TextColor="White"
                     FontSize="30"
                     Clicked="SendMetaBtn_Clicked"/>
             </VerticalStackLayout>

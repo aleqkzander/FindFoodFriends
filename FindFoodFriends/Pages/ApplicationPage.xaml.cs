@@ -131,7 +131,7 @@ public partial class ApplicationPage : TabbedPage
                 if (scoreclass!.DatabaseUser.Name != localUser.Meta.Name && isWithinRadius)
                 {
                     // Create a user data viewmodel
-                    UserView dataUser = new(localUser, scoreclass, initialUserMessages);
+                    ContactCard dataUser = new(localUser, scoreclass, initialUserMessages);
 
                     // Add to SearchView
                     SearchBox.Children.Add(dataUser);
@@ -152,30 +152,41 @@ public partial class ApplicationPage : TabbedPage
         if (initialUserMessages.Count == 0) return;
         MessagesBox.Clear();
 
-        // Maintain a set to store unique user names
-        HashSet<string> addedUsers = [];
-
+        Dictionary<string, FirebaseMessage> lastMessages = [];
         foreach (var message in initialUserMessages)
         {
-            if (message.Sender != localUser!.Meta!.Name) continue;
-
-            foreach (var scoreuser in userscoresList)
+            if (message.Sender == localUser!.Meta!.Name || message.Receiver == localUser!.Meta!.Name)
             {
-                if (message.Receiver == scoreuser.DatabaseUser!.Name && !addedUsers.Contains(scoreuser.DatabaseUser.Name!))
-                {
-                    UserView dataUser = new(localUser!, scoreuser, initialUserMessages);
-                    MessagesBox.Children.Add(dataUser);
+                // Update lastMessages for the sender
+                if (lastMessages.TryGetValue(message.Sender!, out var existingMessage) && message.Timestamp != existingMessage.Timestamp)
+                    lastMessages[message.Sender!] = message;
+                else
+                    lastMessages[message.Sender!] = message;
 
-                    // Add the user to the set of added users
-                    addedUsers.Add(scoreuser.DatabaseUser.Name!);
-                }
+                // Update lastMessages only for the receiver
+                if (lastMessages.TryGetValue(message.Receiver!, out var existingMessage2) && message.Timestamp != existingMessage2.Timestamp)
+                    lastMessages[message.Receiver!] = message;
+                else
+                    lastMessages[message.Receiver!] = message;
+            }
+        }
+
+        foreach (var message in lastMessages)
+        {
+            var lastMessage = message.Value;
+            var scoreuser = userscoresList.FirstOrDefault(user => user.DatabaseUser?.Name == message.Key);
+            if (scoreuser != null && scoreuser.DatabaseUser!.Name != localUser!.Meta!.Name)
+            {
+                ContactCard dataUser = new(localUser!, scoreuser, initialUserMessages,  lastMessage.Sender!, lastMessage.Message!);
+                MessagesBox.Children.Add(dataUser);
             }
         }
     }
 
     private void ResetLocalDataBtn_Clicked(object sender, EventArgs e)
     {
-        FirebaseDataFile.Delete();
+        FirebaseDataFile.DeleteData();
+        FirebaseDataFile.DeleteMessage();
         Environment.Exit(0);
     }
 
@@ -198,8 +209,10 @@ public partial class ApplicationPage : TabbedPage
 
             if (deletationResult == "success")
             {
-                localUser!.Meta = null;
-                await Navigation.PushModalAsync(new MetaInformationPage(localUser));
+                FirebaseDataFile.DeleteData();
+                FirebaseDataFile.DeleteMessage();
+                await DisplayAlert("Info", "Deine Daten wurden entfernt. Beim nächsten Login kannst du deine Daten ändern.", "Ok");
+                Environment.Exit(0);
             }
             else
             {
@@ -228,8 +241,19 @@ public partial class ApplicationPage : TabbedPage
     {
         try
         {
-            using HttpClient client = new();
-            List<FirebaseMessage>? messageList = await FirebaseDatabase.DownloadAllMessages(client, firebaseUser!.UserID!);
+            List<FirebaseMessage>? messageList = [];
+            string messageJsonData = FirebaseDataFile.GetMessage();
+
+            if (!string.IsNullOrEmpty(messageJsonData))
+            {
+                messageList = FirebaseJsonHelper.ConvertJsonObjectToMessagesList(messageJsonData);
+            }
+            else
+            {
+                await DisplayAlert("Info", "Download ONLINE", "Ok");
+                using HttpClient client = new();
+                messageList = await FirebaseDatabase.DownloadAllMessages(client, firebaseUser!.UserID!);
+            }
 
             if (messageList?.Count != 0)
             {
@@ -237,6 +261,9 @@ public partial class ApplicationPage : TabbedPage
                 {
                     initialUserMessages.Add(message);
                 }
+
+                string messageData = FirebaseJsonHelper.ConvertMessagesListToJsonObject(messageList);
+                FirebaseDataFile.CreateMessage(messageData);
             }
         }
         catch
@@ -244,6 +271,10 @@ public partial class ApplicationPage : TabbedPage
         }
     }
 
+    /// <summary>
+    /// Call this method pass in an updated messages list
+    /// </summary>
+    /// <param name="messages"></param>
     public void UpdateInitialUserMessages(List<FirebaseMessage> messages)
     {
         if (messages.Count != 0)
@@ -252,6 +283,15 @@ public partial class ApplicationPage : TabbedPage
             {
                 initialUserMessages.Add(message);
             }
+
+            FirebaseDataFile.DeleteMessage();
+            string messageData = FirebaseJsonHelper.ConvertMessagesListToJsonObject(messages);
+            FirebaseDataFile.CreateMessage(messageData);
         }
+    }
+
+    private void DataPrivacyBtn_Clicked(object sender, EventArgs e)
+    {
+        DisplayAlert("Privacy", "Hier wird was steht", "Ok");
     }
 }

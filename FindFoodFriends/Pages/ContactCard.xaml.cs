@@ -5,22 +5,34 @@
 using FindFoodFriends.Firebase.Objects;
 namespace FindFoodFriends.Pages;
 
-public partial class UserView : ContentView
+public partial class ContactCard : ContentView
 {
     private readonly FirebaseUser localuser;
     private readonly ScoreUser scoreuser;
     private readonly List<FirebaseMessage> initialUserMessages;
 
-	public UserView(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages)
+	public ContactCard(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages)
 	{
 		InitializeComponent();
         this.localuser = localuser;
         this.scoreuser = scoreuser;
-        UsernameLabel.Text = scoreuser.DatabaseUser!.Name;
+        Chat_Btn.Text = $"Chatten mit {scoreuser.DatabaseUser!.Name}";
         ScoreLabel.Text = scoreuser.TotalMatchesPercentage;
         DetailsLabel.Text = scoreuser.TrueMatchesEntry;
         initialUserMessages = messages;
     }
+
+    public ContactCard(FirebaseUser localuser, ScoreUser scoreuser, List<FirebaseMessage> messages, string name, string lastmessage)
+    {
+        InitializeComponent();
+        this.localuser = localuser;
+        this.scoreuser = scoreuser;
+        Chat_Btn.Text = $"{scoreuser.DatabaseUser!.Name}";
+        ScoreLabel.Text = name;
+        DetailsLabel.Text = lastmessage;
+        initialUserMessages = messages;
+    }
+
 
     private async void Chat_Btn_Clicked(object sender, EventArgs e)
     {
