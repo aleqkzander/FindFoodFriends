@@ -22,7 +22,8 @@ public partial class LoginPage : ContentPage
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        FirebaseDataFile.Delete();
+        FirebaseDataFile.DeleteData();
+        FirebaseDataFile.DeleteMessage();
     }
 
     private async void LoginBtn_Clicked(object sender, EventArgs e)
@@ -79,7 +80,7 @@ public partial class LoginPage : ContentPage
 
                     // create a new local file
                     string firebaseUserJson = FirebaseJsonHelper.ConvertFirebaseUserToJsonObject(firebaseUser)!;
-                    FirebaseDataFile.Create(firebaseUserJson);
+                    FirebaseDataFile.CreateData(firebaseUserJson);
 
                     await Navigation.PushModalAsync(new ApplicationPage(firebaseUser));
                 }

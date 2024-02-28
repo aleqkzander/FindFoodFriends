@@ -14,7 +14,8 @@ public partial class MetaInformationPage : ContentPage
 	{
 		InitializeComponent();
         this.firebaseUser = firebaseUser;
-        FirebaseDataFile.Delete();
+        FirebaseDataFile.DeleteData();
+        FirebaseDataFile.DeleteMessage();
     }
 
     protected override async void OnAppearing()
@@ -293,7 +294,7 @@ public partial class MetaInformationPage : ContentPage
             if (response == "success")
             {
                 string firebaseUserJson = FirebaseJsonHelper.ConvertFirebaseUserToJsonObject(firebaseUser)!;
-                FirebaseDataFile.Create(firebaseUserJson);
+                FirebaseDataFile.CreateData(firebaseUserJson);
                 await Navigation.PushModalAsync(new ApplicationPage(firebaseUser));
             }
             else

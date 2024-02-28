@@ -5,54 +5,50 @@
              Title=""
              BackgroundColor="White">
 
-    <VerticalStackLayout Padding="5" Spacing="5" VerticalOptions="FillAndExpand">
-        
-        <VerticalStackLayout.GestureRecognizers>
+    <FlexLayout Margin="5" Direction="Column" VerticalOptions="FillAndExpand" JustifyContent="SpaceBetween">
+
+        <FlexLayout.GestureRecognizers>
             <SwipeGestureRecognizer Direction="Right" Swiped="SwipeGestureRecognizer_Swiped"/>
-        </VerticalStackLayout.GestureRecognizers>
-        
-        <Image x:Name="loading" 
-               Source="loading.gif" 
-               HeightRequest="50"
-               IsAnimationPlaying="False" 
-               IsVisible="true"/>
+        </FlexLayout.GestureRecognizers>
 
-        <Frame CornerRadius="25">
-            <Label 
-            x:Name="Chatuser"
-            FontSize="35"
-            TextColor="#467158" 
-            HorizontalTextAlignment="Center"/>
-        </Frame>
+        <VerticalStackLayout VerticalOptions="Start">
+            <Image x:Name="loading" 
+                       Source="loading.gif" 
+                       HeightRequest="50"
+                       IsAnimationPlaying="False" 
+                       IsVisible="true"/>
 
-        <Frame CornerRadius="25" VerticalOptions="CenterAndExpand" HeightRequest="380">
-            <ScrollView x:Name="ScrollView">
-                <VerticalStackLayout x:Name="MessageContainer" Spacing="10">
-                    <!-- Add messages here -->
-                </VerticalStackLayout>
-            </ScrollView>
-        </Frame>
+            <Label x:Name="Chatuser"
+                       FontSize="35"
+                       TextColor="#467158" 
+                       HorizontalTextAlignment="Center"/>
+        </VerticalStackLayout>
 
-        <Frame CornerRadius="25">
-            <VerticalStackLayout Spacing="5">
-                <ScrollView>
-                    <Frame HeightRequest="75">
-                        <Editor
-                        x:Name="MessageEntry"
-                        Placeholder="Enter your message"
-                        PlaceholderColor="#444444"
-                        TextColor="#444444"/>
-                    </Frame>
-                </ScrollView>
+        <Line Stroke="#467158"  X1="0" Y1="0" X2="300" Y2="0" HorizontalOptions="Center" StrokeThickness="1.5"></Line>
 
-                <Button 
-                x:Name="SendBtn"
-                Text="Abschicken"
-                BackgroundColor="#65a27d"
-                TextColor="White"
-                Clicked="SendBtn_Clicked"/>
+        <ScrollView x:Name="ScrollView" HeightRequest="375">
+            <VerticalStackLayout x:Name="MessageContainer" Spacing="5">
+                <!-- Add messages here -->
             </VerticalStackLayout>
-        </Frame>
-        
-    </VerticalStackLayout>
+        </ScrollView>
+
+        <Line Stroke="#467158"  X1="0" Y1="0" X2="300" Y2="0" HorizontalOptions="Center" StrokeThickness="1.5"></Line>
+
+        <VerticalStackLayout Spacing="5" VerticalOptions="End">
+            <ScrollView>
+                <Frame>
+                    <Editor x:Name="MessageEntry"
+                                Placeholder="Deine Nachricht..."
+                                PlaceholderColor="#444444"
+                                TextColor="#444444"/>
+                </Frame>
+            </ScrollView>
+
+            <Button x:Name="SendBtn"
+                        Text="Abschicken"
+                        BackgroundColor="#65a27d"
+                        TextColor="White"
+                        Clicked="SendBtn_Clicked"/>
+        </VerticalStackLayout>
+    </FlexLayout>
 </ContentPage>

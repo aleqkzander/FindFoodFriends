@@ -1,7 +1,6 @@
 using FindFoodFriends.Firebase;
 using FindFoodFriends.Firebase.Objects;
 using FindFoodFriends.Firebase.Utility;
-using System.Runtime.InteropServices;
 
 namespace FindFoodFriends.Pages;
 
@@ -186,7 +185,8 @@ public partial class ApplicationPage : TabbedPage
 
     private void ResetLocalDataBtn_Clicked(object sender, EventArgs e)
     {
-        FirebaseDataFile.Delete();
+        FirebaseDataFile.DeleteData();
+        FirebaseDataFile.DeleteMessage();
         Environment.Exit(0);
     }
 
@@ -209,7 +209,8 @@ public partial class ApplicationPage : TabbedPage
 
             if (deletationResult == "success")
             {
-                FirebaseDataFile.Delete();
+                FirebaseDataFile.DeleteData();
+                FirebaseDataFile.DeleteMessage();
                 await DisplayAlert("Info", "Deine Daten wurden entfernt. Beim nächsten Login kannst du deine Daten ändern.", "Ok");
                 Environment.Exit(0);
             }
@@ -240,8 +241,19 @@ public partial class ApplicationPage : TabbedPage
     {
         try
         {
-            using HttpClient client = new();
-            List<FirebaseMessage>? messageList = await FirebaseDatabase.DownloadAllMessages(client, firebaseUser!.UserID!);
+            List<FirebaseMessage>? messageList = [];
+            string messageJsonData = FirebaseDataFile.GetMessage();
+
+            if (!string.IsNullOrEmpty(messageJsonData))
+            {
+                messageList = FirebaseJsonHelper.ConvertJsonObjectToMessagesList(messageJsonData);
+            }
+            else
+            {
+                await DisplayAlert("Info", "Download ONLINE", "Ok");
+                using HttpClient client = new();
+                messageList = await FirebaseDatabase.DownloadAllMessages(client, firebaseUser!.UserID!);
+            }
 
             if (messageList?.Count != 0)
             {
@@ -249,6 +261,9 @@ public partial class ApplicationPage : TabbedPage
                 {
                     initialUserMessages.Add(message);
                 }
+
+                string messageData = FirebaseJsonHelper.ConvertMessagesListToJsonObject(messageList);
+                FirebaseDataFile.CreateMessage(messageData);
             }
         }
         catch
@@ -268,6 +283,10 @@ public partial class ApplicationPage : TabbedPage
             {
                 initialUserMessages.Add(message);
             }
+
+            FirebaseDataFile.DeleteMessage();
+            string messageData = FirebaseJsonHelper.ConvertMessagesListToJsonObject(messages);
+            FirebaseDataFile.CreateMessage(messageData);
         }
     }
 

@@ -21,7 +21,7 @@ namespace FindFoodFriends
 
         private void LoadLocalData()
         {
-            if (FirebaseDataFile.IsPresent() == false)
+            if (FirebaseDataFile.IsPresentDataFile() == false)
             {
                 OpenWelcome();
                 return;
@@ -36,7 +36,7 @@ namespace FindFoodFriends
         {
             try
             {
-                FirebaseUser? localFirebaseUser = FirebaseJsonHelper.ConvertJsonObjectToFirebaseUser(FirebaseDataFile.Get());
+                FirebaseUser? localFirebaseUser = FirebaseJsonHelper.ConvertJsonObjectToFirebaseUser(FirebaseDataFile.GetData());
                 await CheckUserTokenAsync(localFirebaseUser!);
             }
             catch
@@ -56,7 +56,7 @@ namespace FindFoodFriends
                 }
                 else
                 {
-                    FirebaseUser? localFirebaseUser = FirebaseJsonHelper.ConvertJsonObjectToFirebaseUser(FirebaseDataFile.Get());
+                    FirebaseUser? localFirebaseUser = FirebaseJsonHelper.ConvertJsonObjectToFirebaseUser(FirebaseDataFile.GetData());
                     if (firebaseUser.Meta != null) OpenMainApplication(firebaseUser);
                     else OpenMetaInformation(firebaseUser);
                 }

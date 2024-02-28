@@ -59,6 +59,17 @@ namespace FindFoodFriends.Firebase.Utility
         {
             return JsonSerializer.Deserialize<Dictionary<string, FirebaseMessage>>(jsonObject);
         }
+
+
+        public static List<FirebaseMessage>? ConvertJsonObjectToMessagesList(string json)
+        {
+            return JsonSerializer.Deserialize<List<FirebaseMessage>>(json);
+        }
+
+        public static string ConvertMessagesListToJsonObject(List<FirebaseMessage> messagesList)
+        {
+            return JsonSerializer.Serialize(messagesList);
+        }
     }
 }
  
