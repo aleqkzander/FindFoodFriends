@@ -31,6 +31,7 @@
                        TextColor="#467158" 
                        HorizontalTextAlignment="Center"/>
 
+                
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="TraditionellerVeganerCheckBox" 
                               Color="#467158"/>
@@ -69,7 +70,6 @@
                             Clicked="AboutRohVeganerButton_Clicked" />
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="FreeganerCheckBox" 
                               Color="#467158"/>
@@ -88,7 +88,6 @@
                             CornerRadius="30" 
                             Clicked="AboutFreeganerButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="CleanEaterCheckBox" 
@@ -109,7 +108,6 @@
                             Clicked="AboutCleanEaterButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="LowCarbCheckBox" 
                               Color="#467158"/>
@@ -128,7 +126,6 @@
                             CornerRadius="30" 
                             Clicked="AboutLowCarbButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="AyurvedaCheckBox" 
@@ -149,7 +146,6 @@
                             Clicked="AboutAyurvedaButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="BasischCheckBox" 
                               Color="#467158"/>
@@ -168,7 +164,6 @@
                             CornerRadius="30" 
                             Clicked="AboutBasischButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="SlowFoodCheckBox" 
@@ -217,7 +212,6 @@
                             Clicked="AboutZuckerfreiButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="WeissmehlfreiCheckBox" 
                               Color="#467158"/>
@@ -236,7 +230,6 @@
                             CornerRadius="30"  
                             Clicked="AboutWeissmehlfreiButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="SaisonalCheckBox" 
@@ -257,7 +250,6 @@
                             Clicked="AboutSaisonalButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="RegionalCheckBox" 
                               Color="#467158"/>
@@ -276,7 +268,6 @@
                             CornerRadius="30" 
                             Clicked="AboutRegionalButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="FairtradeCheckBox" 
@@ -297,7 +288,6 @@
                             Clicked="AboutFairtradeButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="UnverpacktCheckBox" 
                               Color="#467158"/>
@@ -316,7 +306,6 @@
                             CornerRadius="30" 
                             Clicked="AboutUnverpacktButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="BioCheckBox" 
@@ -337,7 +326,6 @@
                             Clicked="AboutBioButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="KeineZusatzstoffeCheckBox" 
                               Color="#467158"/>
@@ -357,6 +345,7 @@
                             Clicked="AboutKeineZusatzstoffeButton_Clicked"/>
                 </FlexLayout>
 
+                
                 <VerticalStackLayout Padding="0, 35, 0, 0">
                     <Label Text="Allergene" 
                        FontSize="35"
@@ -384,7 +373,6 @@
                             Clicked="AboutGlutenButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="SesamCheckBox" 
                               Color="#467158"/>
@@ -404,7 +392,6 @@
                             Clicked="AboutSesamButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="SenfCheckBox" 
                               Color="#467158"/>
@@ -422,7 +409,6 @@
                             CornerRadius="30" 
                             Clicked="AboutSenfButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="LupineCheckBox" 
@@ -443,7 +429,6 @@
                             Clicked="AboutLupineButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="SulfiteCheckBox" 
                               Color="#467158"/>
@@ -462,7 +447,6 @@
                             CornerRadius="30" 
                             Clicked="AboutSulfiteButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="NuesseCheckBox" 
@@ -483,7 +467,6 @@
                             Clicked="AboutNuesseButton_Clicked"/>
                 </FlexLayout>
 
-
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="SojaCheckBox" 
                               Color="#467158"/>
@@ -502,7 +485,6 @@
                             CornerRadius="30"  
                             Clicked="AboutSojaButton_Clicked"/>
                 </FlexLayout>
-
 
                 <FlexLayout Direction="Row" JustifyContent="SpaceBetween">
                     <CheckBox x:Name="SellerieCheckBox" 
