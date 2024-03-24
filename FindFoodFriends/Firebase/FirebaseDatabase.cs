@@ -78,8 +78,7 @@ namespace FindFoodFriends.Firebase
 
                 foreach (var user in userDict)
                 {
-                    FirebaseUserMeta userObject = new();
-                    userObject = user.Value;
+                    FirebaseUserMeta userObject = user.Value;
                     userObject.UserId = user.Key;
                     firebaseUserMetaList.Add(userObject);
                 }
@@ -188,8 +187,8 @@ namespace FindFoodFriends.Firebase
 
                 foreach (var message in messageDict)
                 {
-                    FirebaseMessage firebaseMessage = new();
-                    firebaseMessage = message.Value;
+                    FirebaseMessage firebaseMessage = message.Value;
+                    //firebaseMessage = message.Value;
                     firebaseMessage.MessageId = message.Key;
                     firebaseMessages.Add(firebaseMessage);
                 }

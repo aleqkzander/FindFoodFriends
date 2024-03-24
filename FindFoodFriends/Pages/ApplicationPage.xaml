@@ -42,7 +42,7 @@
     </ContentPage>
 
 
-    <ContentPage Title="Nachrichten" IconImageSource="messages.png" BackgroundColor="White">
+    <ContentPage Title="Chats" IconImageSource="messages.png" BackgroundColor="White">
         <ScrollView>
             <VerticalStackLayout x:Name="MessagesBox" Padding="10" Spacing="20" TranslationY="25">
                 <!--This will be filled with user from the database-->
@@ -51,7 +51,7 @@
     </ContentPage>
 
 
-    <ContentPage Title="Einstellungen" IconImageSource="settings.png" BackgroundColor="White">
+    <ContentPage Title="Menü" IconImageSource="settings.png" BackgroundColor="White">
         <ScrollView >
             <VerticalStackLayout x:Name="SettingsBox" Padding="10" Spacing="20" TranslationY="25">
 

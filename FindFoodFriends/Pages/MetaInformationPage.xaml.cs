@@ -246,7 +246,7 @@ public partial class MetaInformationPage : ContentPage
         string bio = "bio=" + BioCheckBox.IsChecked;
         userReferences.Add(bio);
 
-        string keineZusatzstoffe = "keine-zusatzstoff=" + KeineZusatzstoffeCheckBox.IsChecked;
+        string keineZusatzstoffe = "keine-zusatzstoffe=" + KeineZusatzstoffeCheckBox.IsChecked;
         userReferences.Add(keineZusatzstoffe);
 
         string keinGluten = "kein-gluten=" + GlutenCheckBox.IsChecked;

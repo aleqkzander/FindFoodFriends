@@ -42,6 +42,10 @@ public partial class ApplicationPage : TabbedPage
                     FillMessagesBox();
                 }
             }
+            else
+            {
+                DisableLoadingAnimation();
+            }
         }
         catch
         {
@@ -68,7 +72,7 @@ public partial class ApplicationPage : TabbedPage
                 #region calculate the score
                 for (int i = 0; i < localUser!.Meta!.References!.Count; i++)
                 {
-                    if (localUser.Meta.References[i] == user.References![i])
+                    if (localUser.Meta.References[i].ToLower() == user.References![i].ToLower())
                     {
                         // for displaying all matches
                         totalMatchesScore++;
@@ -103,7 +107,7 @@ public partial class ApplicationPage : TabbedPage
                     //LocalUser = localUser.Meta,
                     DatabaseUser = user,
                     TotalMatchesPercentage = totalMatchesPercentage,
-                    TrueMatchesEntry = trueMatchesEntrys,
+                    TrueMatchesEntry = trueMatchesEntrys.ToLower(),
                     TotalMatchesScore = totalMatchesScore,
                     TrueMatchesScore = trueMatchesScore
                 };
@@ -250,7 +254,6 @@ public partial class ApplicationPage : TabbedPage
             }
             else
             {
-                await DisplayAlert("Info", "Download ONLINE", "Ok");
                 using HttpClient client = new();
                 messageList = await FirebaseDatabase.DownloadAllMessages(client, firebaseUser!.UserID!);
             }
