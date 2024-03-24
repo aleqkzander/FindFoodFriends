@@ -72,16 +72,14 @@ public partial class ApplicationPage : TabbedPage
                 #region calculate the score
                 for (int i = 0; i < localUser!.Meta!.References!.Count; i++)
                 {
-                    if (localUser.Meta.References[i].ToLower() == user.References![i].ToLower())
+                    if (string.Equals(localUser.Meta.References[i], user.References![i]))
                     {
                         // for displaying all matches
                         totalMatchesScore++;
 
                         if (user.References[i].Trim().Contains("true", StringComparison.OrdinalIgnoreCase))
                         {
-                            // Your existing code for handling true matches
                             trueMatchesScore++;
-
                             int index = user.References[i].IndexOf('=');
                             string filter = user.References[i][index..];
                             string result = user.References[i].Replace(filter, "");
