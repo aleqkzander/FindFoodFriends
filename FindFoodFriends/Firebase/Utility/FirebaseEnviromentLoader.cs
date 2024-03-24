@@ -42,5 +42,6 @@ namespace FindFoodFriends.Firebase.Utility
         public string GetUserDataEndpoint() { return _configuration["FIREBASE_GETUSERDATA_ENDPOINT"]!; }
         public string RefreshIdTokenEndpoint() { return _configuration["FIREBASE_REFRESHIDTOKEN_ENDPOINT"]!; }
         public string GetDatabaseEndpoint() { return _configuration["FIREBASE_DATABASE_ENDPOINT"]!; }
+        public string GetInfoTextEndpoint() { return _configuration["INFO_TEXT_ENDPOINT"]!; }
     }
 }
