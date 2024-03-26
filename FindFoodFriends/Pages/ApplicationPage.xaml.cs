@@ -21,7 +21,6 @@ public partial class ApplicationPage : TabbedPage
     {
         base.OnAppearing();
         await Dispatcher.DispatchAsync(EnableLoadingAnimation);
-
         SliderRadius.Value = 10;
 
         try
@@ -72,20 +71,17 @@ public partial class ApplicationPage : TabbedPage
                 #region calculate the score
                 for (int i = 0; i < localUser!.Meta!.References!.Count; i++)
                 {
-                    if (string.Equals(localUser.Meta.References[i], user.References![i]))
+                    if (string.Equals(localUser.Meta.References[i].Name, user.References![i].Name))
                     {
                         // for displaying all matches
                         totalMatchesScore++;
 
-                        if (user.References[i].Trim().Contains("true", StringComparison.OrdinalIgnoreCase))
+                        if (user.References[i].State == true)
                         {
                             trueMatchesScore++;
-                            int index = user.References[i].IndexOf('=');
-                            string filter = user.References[i][index..];
-                            string result = user.References[i].Replace(filter, "");
 
                             if (!localUser.Meta.References.Count.Equals(i - 1))
-                                tempMatchesList.Add(result);
+                                tempMatchesList.Add(user.References[i].Name!);
 
                             trueMatchesEntrys = string.Join(", ", tempMatchesList);
                         }

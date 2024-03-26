@@ -14,7 +14,7 @@ namespace FindFoodFriends.Firebase.Objects
         public UserLocation? Location { get; set; }
 
         [JsonPropertyName("refrences")]
-        public List<string>? References { get; set; }
+        public List<Reference>? References { get; set; }
 
         [JsonPropertyName("chatrooms")]
         public List<FirebaseChatroom>? Chatrooms { get; set; }
